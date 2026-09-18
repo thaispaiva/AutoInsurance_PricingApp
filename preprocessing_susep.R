@@ -28,7 +28,7 @@
 #   Data cleaning (Section 5b) removes small undocumented artifacts with
 #   no pedagogical value (sex = 0, region codes 00/99/blank, bonus classes
 #   * and X, negative claim amounts) and drops the effectively unfilled
-#   tempo_hab field. The undocumented utilizacao = 0 category (~22%) is
+#   tempo_hab field. The undocumented utilizacao = 0 category (~20%) is
 #   intentionally KEPT and documented in data_dictionary.qmd: it carries a
 #   distinct risk profile and is the case's real-data lesson.
 # -----------------------------------------------------------------------
@@ -188,7 +188,7 @@ base_final <- r_filtered |>
 # -----------------------------------------------------------------------
 # 5b. Data cleaning
 #     Removes small undocumented artifacts with no pedagogical value.
-#     The utilizacao = 0 category (~22%, "not informed") is deliberately
+#     The utilizacao = 0 category (~20%, "not informed") is deliberately
 #     kept — see data_dictionary.qmd.
 # -----------------------------------------------------------------------
 message("Cleaning...")
@@ -281,13 +281,13 @@ message("Structural invariants: OK")
 
 # Reference figures (2019B raw data, seed 2019):
 #   target sample size  ~200,000 policies
-#   overall frequency   ~0.24 claims per policy-year
+#   overall frequency   ~0.25 claims per policy-year
 #   max exposure        ~0.4956 policy-years (181/365.25)
-#   utilizacao = 0      ~22% ("not informed", deliberately kept)
+#   utilizacao = 0      ~20% ("not informed", deliberately kept)
 message("Policies:           ", nrow(sample_final), "   (target: ~200,000)")
 message("Overall frequency:  ",
         round(sum(sample_final$n_sinistros) / sum(sample_final$exposicao), 4),
-        "   (reference: ~0.24)")
+        "   (reference: ~0.25)")
 message("utilizacao = 0:     ",
-        round(100 * mean(sample_final$utilizacao == "0"), 1), "%   (reference: ~22%)")
+        round(100 * mean(sample_final$utilizacao == "0"), 1), "%   (reference: ~20%)")
 message("Done!")

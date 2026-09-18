@@ -45,6 +45,7 @@ Exposure for each policy was computed in **policy-years**, limited to the semest
 
 | Variable | Description |
 |---|---|
+| `cod_apo` | Anonymized policy identifier (not a rating variable) |
 | `regiao` | Risk region code (SUSEP regional rating table) |
 | `ano_modelo` | Vehicle model year |
 | `tipo_franq` | Deductible type: 1 = reduced, 2 = standard, 3 = increased, 4 = fixed deductible, 9 = no deductible |

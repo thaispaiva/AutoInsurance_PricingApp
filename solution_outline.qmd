@@ -7,12 +7,12 @@ subtitle: "Instructor guide: what to look for when evaluating student applicatio
 
 A strong submission shows:
 
-- **Frequency computed correctly as claims per policy-year** (total claims divided by total exposure within each group), not claims per policy. This is the single most important technical point in the EDA: with a semester window, most policies have exposure well below 1, and ignoring this roughly doubles apparent frequencies.
+- **Frequency computed correctly as claims per policy-year** (total claims divided by total exposure within each group), not claims per policy. This is the single most important technical point in the EDA: with a semester window, no policy has more than half a year of exposure (the average is about a third of a year), so claims per policy understate the annual frequency by a factor of about three (roughly 0.08 claims per policy against 0.25 per policy-year).
 - **Severity restricted to policies with at least one claim**, typically displayed on a log scale given the heavy right skew.
 - Frequency and severity broken down by the main rating factors (sex, age group, region), with sensible grouping (age bands rather than raw age; regions with very few policies handled or filtered).
 - Some look at the **observed premium** (`pre_casco`) against the same factors, connecting the data to the pricing question.
 
-Typical expected patterns (useful as a sanity check while grading): higher frequency for younger drivers, moderate differences by sex, substantial variation across regions, and right-skewed severity with a long tail.
+Typical expected patterns (useful as a sanity check while grading): higher frequency for younger drivers (peaking in the 26 to 35 band), small differences in frequency by sex with somewhat higher severity for men, substantial variation across regions, and right-skewed severity with a long tail.
 
 ## Part 2 — Model
 

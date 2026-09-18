@@ -25,13 +25,15 @@ Developed for the undergraduate course *Tarifação de Seguros* (Insurance Ratem
 | [`preprocessing_susep.R`](https://github.com/thaispaiva/AutoInsurance_PricingApp/blob/main/preprocessing_susep.R) | Documented script that builds the dataset from SUSEP's raw public files |
 | [`auto_tarifacao_2019B.csv`](https://github.com/thaispaiva/AutoInsurance_PricingApp/blob/main/auto_tarifacao_2019B.csv) | The dataset: ~200,000 auto policies with claims, first half of 2019 |
 
-## Running the example application
+## Example application
 
-Download `app.R` and `auto_tarifacao_2019B.csv` to the same folder and run `shiny::runApp()` in R. The required packages are listed in the repository's [README](https://github.com/thaispaiva/AutoInsurance_PricingApp#requirements). The models are fitted at startup, which takes about 15 seconds.
+A live demo is available at **<https://thaispaiva-autoinsurance-pricingapp.share.connect.posit.cloud>** (hosted on Posit Connect Cloud's free plan; the first load takes about 15 seconds while the models are fitted).
 
-<!-- If the example app is deployed, add the link here:
-A live demo is available at: URL
--->
+To run it locally, download `app.R` and `auto_tarifacao_2019B.csv` to the same folder and run `shiny::runApp()` in R. The required packages are listed in the repository's [README](https://github.com/thaispaiva/AutoInsurance_PricingApp#requirements). The models are fitted at startup, which takes about 15 seconds.
+
+## License
+
+The case documents, the example application, the preprocessing script and the prepared dataset are released under [CC0 1.0 Universal](https://creativecommons.org/publicdomain/zero/1.0/), a public domain dedication: anyone may copy, adapt and redistribute them, for any purpose, without asking permission and without attribution. Instructors are welcome to translate the case, change the data or reuse any part of it in their own courses.
 
 ## Use of AI tools
 

@@ -6,6 +6,8 @@ Developed for the undergraduate course *Tarifação de Seguros* (Insurance Ratem
 
 **Rendered documents:** <https://thaispaiva.github.io/AutoInsurance_PricingApp/>
 
+**Live demo of the example app:** <https://thaispaiva-autoinsurance-pricingapp.share.connect.posit.cloud>
+
 ## Who this is for
 
 Instructors of ratemaking, non-life insurance pricing, or applied GLM courses. The case is designed as a **capstone project**: it assumes students have already covered GLMs, exposure, and the frequency-severity decomposition. Introducing the case takes about 15 minutes of class time; students then work in teams over 2 to 3 weeks (roughly 12 to 15 hours out of class).
@@ -23,6 +25,8 @@ Instructors of ratemaking, non-life insurance pricing, or applied GLM courses. T
 | `preprocessing_susep.R` | Documented script that builds the dataset from SUSEP's raw public files (for transparency; not needed to run the case) |
 | `app.R` | Example application: one complete solution (frequency x severity), with goodness-of-fit checks and a premium calculator |
 | `README.txt` | Notes that accompany the example application, in the format students are asked to deliver |
+| `manifest.json` | Dependency file used to deploy the example app to Posit Connect Cloud |
+| `LICENSE` | CC0 1.0 Universal: free to use, adapt and share, no attribution required |
 
 ## Working with this project
 
@@ -55,9 +59,13 @@ install.packages(c("shiny", "bslib", "dplyr", "ggplot2", "plotly", "DT", "readr"
 
 No paid services are required. Teams may optionally publish their finished app to [Posit Connect Cloud](https://connect.posit.cloud/) (free plan), which deploys from a public GitHub repository; `app.R` includes notes on keeping memory use low on free hosting tiers.
 
-## Data source and license
+## Data source
 
 The underlying data are published by SUSEP in anonymized form and are freely available at the [official open data portal](https://www.gov.br/susep/pt-br/central-de-conteudos/dados-estatisticos/bases-anonimizadas/bases_auto). See `data_dictionary.qmd` for the exact filters and sampling applied.
+
+## License
+
+The case documents, the example application, the preprocessing script and the prepared dataset are released under [CC0 1.0 Universal](https://creativecommons.org/publicdomain/zero/1.0/), a public domain dedication: anyone may copy, adapt and redistribute them, for any purpose, without asking permission and without attribution. Instructors are welcome to translate the case, change the data or reuse any part of it in their own courses. The full text is in the `LICENSE` file.
 
 ## Use of AI tools
 

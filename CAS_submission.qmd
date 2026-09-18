@@ -92,7 +92,7 @@ No dedicated slide deck is required. The case is introduced with a brief (about 
 
 An instructor-facing solution outline ([`solution_outline.qmd`](solution_outline.qmd)) is included with this submission. It describes, part by part, what the instructor should look for in a strong submission (correct exposure-based frequency calculations, proper offset use, coherent interpretation of coefficients, a calculator that handles profiles outside the training data gracefully) and lists the most common technical pitfalls observed when this case was run with a real class, such as factor-level mismatches between the frequency and severity models and frequency computed per policy instead of per policy-year.
 
-A complete **example application** (`app.R`) is also included, implementing Option A end to end: an exploratory dashboard, frequency and severity models with relativities, coefficient tables and goodness-of-fit checks, and an interactive premium calculator in which the user chooses the rating variable shown in the response chart. It is presented as the pricing platform of a fictional insurer and shows results only, leaving the interpretation to the presentation, as students are asked to do. The code keeps memory use low enough for free hosting tiers such as Posit Connect Cloud, so instructors and students can deploy it (and their own versions) at no cost.
+A complete **example application** (`app.R`) is also included, implementing Option A end to end: an exploratory dashboard, frequency and severity models with relativities, coefficient tables and goodness-of-fit checks, and an interactive premium calculator in which the user chooses the rating variable shown in the response chart. It is presented as the pricing platform of a fictional insurer and shows results only, leaving the interpretation to the presentation, as students are asked to do. The code keeps memory use low enough for free hosting tiers such as Posit Connect Cloud, so instructors and students can deploy it (and their own versions) at no cost. A live demo is available at: **<https://thaispaiva-autoinsurance-pricingapp.share.connect.posit.cloud>**
 
 ## 10. Format and Access Instructions
 
@@ -105,14 +105,17 @@ The repository is organized as an RStudio/Quarto project. All documents are writ
 Contents:
 
 - `README.md` — overview and setup instructions.
+- `LICENSE` — CC0 1.0 Universal (see below).
 - [`case_description.qmd`](case_description.qmd) — the student-facing case handout.
 - [`data_dictionary.qmd`](data_dictionary.qmd) — data provenance, variable dictionary, and data-quality notes.
 - [`solution_outline.qmd`](solution_outline.qmd) — instructor-facing grading guide.
 - `auto_tarifacao_2019B.csv` — the dataset (~17 MB).
 - `preprocessing_susep.R` — the documented script that builds the dataset from SUSEP's raw public files (for transparency; students do not need to run it).
-- `app.R` — example application (one complete solution), with its accompanying `README.txt`.
+- `app.R` — example application (one complete solution), with its accompanying `README.txt`. Live demo: <https://thaispaiva-autoinsurance-pricingapp.share.connect.posit.cloud>
 
 **Requirements:** R (version 4.2 or later) with the packages `shiny`, `bslib`, `dplyr`, `ggplot2`, `plotly`, `DT`, `readr`, and `scales`. No paid services are required. Optionally, teams may publish their finished app to Posit Connect Cloud (free plan) to enable browser-based demos without local installation.
+
+**License:** all materials are released under [CC0 1.0 Universal](https://creativecommons.org/publicdomain/zero/1.0/), a public domain dedication. Instructors may use, translate, adapt and redistribute the case, the data and the code freely, with no permission or attribution required.
 
 ## Use of AI Tools
 

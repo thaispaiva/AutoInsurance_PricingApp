@@ -181,12 +181,12 @@ ul.task-list li input[type="checkbox"] {
 <h2 class="anchored" data-anchor-id="part-1-exploratory-analysis">Part 1 — Exploratory Analysis</h2>
 <p>A strong submission shows:</p>
 <ul>
-<li><strong>Frequency computed correctly as claims per policy-year</strong> (total claims divided by total exposure within each group), not claims per policy. This is the single most important technical point in the EDA: with a semester window, most policies have exposure well below 1, and ignoring this roughly doubles apparent frequencies.</li>
+<li><strong>Frequency computed correctly as claims per policy-year</strong> (total claims divided by total exposure within each group), not claims per policy. This is the single most important technical point in the EDA: with a semester window, no policy has more than half a year of exposure (the average is about a third of a year), so claims per policy understate the annual frequency by a factor of about three (roughly 0.08 claims per policy against 0.25 per policy-year).</li>
 <li><strong>Severity restricted to policies with at least one claim</strong>, typically displayed on a log scale given the heavy right skew.</li>
 <li>Frequency and severity broken down by the main rating factors (sex, age group, region), with sensible grouping (age bands rather than raw age; regions with very few policies handled or filtered).</li>
 <li>Some look at the <strong>observed premium</strong> (<code>pre_casco</code>) against the same factors, connecting the data to the pricing question.</li>
 </ul>
-<p>Typical expected patterns (useful as a sanity check while grading): higher frequency for younger drivers, moderate differences by sex, substantial variation across regions, and right-skewed severity with a long tail.</p>
+<p>Typical expected patterns (useful as a sanity check while grading): higher frequency for younger drivers (peaking in the 26 to 35 band), small differences in frequency by sex with somewhat higher severity for men, substantial variation across regions, and right-skewed severity with a long tail.</p>
 </section>
 <section id="part-2-model" class="level2">
 <h2 class="anchored" data-anchor-id="part-2-model">Part 2 — Model</h2>

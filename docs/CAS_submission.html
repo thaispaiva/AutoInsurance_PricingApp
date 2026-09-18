@@ -282,7 +282,7 @@ ul.task-list li input[type="checkbox"] {
 <section id="teaching-notes-and-solution-outline" class="level2">
 <h2 class="anchored" data-anchor-id="teaching-notes-and-solution-outline">9. Teaching Notes and Solution Outline</h2>
 <p>An instructor-facing solution outline (<a href="./solution_outline.html"><code>solution_outline.qmd</code></a>) is included with this submission. It describes, part by part, what the instructor should look for in a strong submission (correct exposure-based frequency calculations, proper offset use, coherent interpretation of coefficients, a calculator that handles profiles outside the training data gracefully) and lists the most common technical pitfalls observed when this case was run with a real class, such as factor-level mismatches between the frequency and severity models and frequency computed per policy instead of per policy-year.</p>
-<p>A complete <strong>example application</strong> (<code>app.R</code>) is also included, implementing Option A end to end: an exploratory dashboard, frequency and severity models with relativities, coefficient tables and goodness-of-fit checks, and an interactive premium calculator in which the user chooses the rating variable shown in the response chart. It is presented as the pricing platform of a fictional insurer and shows results only, leaving the interpretation to the presentation, as students are asked to do. The code keeps memory use low enough for free hosting tiers such as Posit Connect Cloud, so instructors and students can deploy it (and their own versions) at no cost.</p>
+<p>A complete <strong>example application</strong> (<code>app.R</code>) is also included, implementing Option A end to end: an exploratory dashboard, frequency and severity models with relativities, coefficient tables and goodness-of-fit checks, and an interactive premium calculator in which the user chooses the rating variable shown in the response chart. It is presented as the pricing platform of a fictional insurer and shows results only, leaving the interpretation to the presentation, as students are asked to do. The code keeps memory use low enough for free hosting tiers such as Posit Connect Cloud, so instructors and students can deploy it (and their own versions) at no cost. A live demo is available at: <strong><a href="https://thaispaiva-autoinsurance-pricingapp.share.connect.posit.cloud" class="uri">https://thaispaiva-autoinsurance-pricingapp.share.connect.posit.cloud</a></strong></p>
 </section>
 <section id="format-and-access-instructions" class="level2">
 <h2 class="anchored" data-anchor-id="format-and-access-instructions">10. Format and Access Instructions</h2>
@@ -292,14 +292,16 @@ ul.task-list li input[type="checkbox"] {
 <p>Contents:</p>
 <ul>
 <li><code>README.md</code> — overview and setup instructions.</li>
+<li><code>LICENSE</code> — CC0 1.0 Universal (see below).</li>
 <li><a href="./case_description.html"><code>case_description.qmd</code></a> — the student-facing case handout.</li>
 <li><a href="./data_dictionary.html"><code>data_dictionary.qmd</code></a> — data provenance, variable dictionary, and data-quality notes.</li>
 <li><a href="./solution_outline.html"><code>solution_outline.qmd</code></a> — instructor-facing grading guide.</li>
 <li><code>auto_tarifacao_2019B.csv</code> — the dataset (~17 MB).</li>
 <li><code>preprocessing_susep.R</code> — the documented script that builds the dataset from SUSEP’s raw public files (for transparency; students do not need to run it).</li>
-<li><code>app.R</code> — example application (one complete solution), with its accompanying <code>README.txt</code>.</li>
+<li><code>app.R</code> — example application (one complete solution), with its accompanying <code>README.txt</code>. Live demo: <a href="https://thaispaiva-autoinsurance-pricingapp.share.connect.posit.cloud" class="uri">https://thaispaiva-autoinsurance-pricingapp.share.connect.posit.cloud</a></li>
 </ul>
 <p><strong>Requirements:</strong> R (version 4.2 or later) with the packages <code>shiny</code>, <code>bslib</code>, <code>dplyr</code>, <code>ggplot2</code>, <code>plotly</code>, <code>DT</code>, <code>readr</code>, and <code>scales</code>. No paid services are required. Optionally, teams may publish their finished app to Posit Connect Cloud (free plan) to enable browser-based demos without local installation.</p>
+<p><strong>License:</strong> all materials are released under <a href="https://creativecommons.org/publicdomain/zero/1.0/">CC0 1.0 Universal</a>, a public domain dedication. Instructors may use, translate, adapt and redistribute the case, the data and the code freely, with no permission or attribution required.</p>
 </section>
 <section id="use-of-ai-tools" class="level2">
 <h2 class="anchored" data-anchor-id="use-of-ai-tools">Use of AI Tools</h2>
