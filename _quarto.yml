@@ -1,0 +1,23 @@
+project:
+  type: default
+  output-dir: docs
+  render:
+    - index.qmd
+    - case_description.qmd
+    - data_dictionary.qmd
+    - solution_outline.qmd
+    - CAS_submission.qmd
+
+author: "Thaís Paiva Galletti - Universidade Federal de Minas Gerais (UFMG), Brazil<br>([thaispaiva@est.ufmg.br](mailto:thaispaiva@est.ufmg.br))"
+lang: en
+
+format:
+  html:
+    theme: cosmo
+    css: styles.css
+    toc: true
+    toc-depth: 3
+    toc-title: "Contents"
+    embed-resources: true
+    link-external-newwindow: true
+    code-copy: true

@@ -1,0 +1,113 @@
+---
+title: "Data Dictionary"
+subtitle: "`auto_tarifacao_2019B.csv`"
+---
+
+## Provenance
+
+The dataset was built from the **anonymized auto insurance databases published by SUSEP** (Superintendência de Seguros Privados, the Brazilian insurance regulator): files `R_AUTO_2019B` (policies) and `S_AUTO_2019B` (claims), covering the first half of 2019.
+
+Official source: https://www.gov.br/susep/pt-br/central-de-conteudos/dados-estatisticos/bases-anonimizadas/bases_auto
+
+The data are published by SUSEP in anonymized form and are freely available to the public. No additional anonymization was required.
+
+## Filters applied
+
+- **Rating category** (`COD_TARIF = 10`): private passenger vehicles, domestic.
+- **Coverage** (`COBERTURA = 1`): comprehensive.
+- **Product type** (`TIPO_PROD = 2`): profile-rated products, which guarantees that driver-level variables are filled in.
+- **Records** (`COD_END = 0`): original policies only, excluding endorsement and cancellation records.
+- Policies with exposure of zero within the semester window, missing driver birth date, or driver age outside 18 to 100 years were excluded.
+- Records with undocumented "not informed" labels in fields of low pedagogical interest were removed at preprocessing: sex recorded as `0` (84 records); blank region codes and the undocumented region codes `00` and `99` (about 0.5% combined); and bonus classes `*` and `X` (about 2.8%). The `X` records all carried a constant 46% bonus discount and very low claim frequency, suggesting a special top bonus class, but were removed to keep the documented 0 to 9 scale.
+- 45 records with negative total claim amounts (net recoveries or reversals) were excluded, since negative responses break both Gamma and Tweedie fits.
+- The `tempo_hab` field (time since licensing) was dropped: about 97% of raw records carry the value 0, so the field is effectively unfilled.
+
+Exposure was computed in **policy-years**, clipped to the semester window (2019-01-01 to 2019-06-30). Claims were restricted to own-damage events (`EVENTO = 1`) and aggregated per policy.
+
+From the filtered population, a **stratified random sample by region** of approximately 200,000 policies was drawn (seed 2019) to keep the file at a manageable size (~17.6 MB). The full preprocessing script is available in this repository (`preprocessing_susep.R`).
+
+## Variables
+
+| Variable | Type | Description |
+|---|---|---|
+| `cod_apo` | character | Anonymized policy identifier |
+| `regiao` | character | Risk region code (SUSEP regional rating table) |
+| `ano_modelo` | integer | Vehicle model year |
+| `tipo_franq` | character | Deductible type: 1 = reduced, 2 = standard, 3 = increased, 4 = fixed deductible, 9 = no deductible |
+| `val_franq` | numeric | Contracted deductible amount (BRL) |
+| `is_casco` | numeric | Insured value, own-damage coverage (BRL) |
+| `utilizacao` | character | Vehicle use: 1 = leisure, 2 = daily commute, 3 = work-related, 0 = not informed (see note below) |
+| `clas_bonus` | character | Bonus-malus class (no-claims discount tier) |
+| `perc_bonus` | numeric | Bonus discount percentage applied |
+| `sexo` | character | Primary driver's sex: M or F |
+| `idade_condutor` | numeric | Primary driver's age in years (reference date: 2019-01-01) |
+| `exposicao` | numeric | Exposure in policy-years (use as offset in the models) |
+| `pre_casco` | numeric | Observed premium charged for own-damage coverage (BRL), reference only |
+| `n_sinistros` | integer | Number of own-damage claims in the period (response variable) |
+| `valor_sinistro` | numeric | Total own-damage claim amount (BRL) (response variable) |
+
+## Data-quality notes
+
+Real regulatory data is rarely perfectly clean. The issues below are artifacts of the source data, documented here so they become discussion points rather than silent traps. Identifying and handling this kind of gap is part of the exercise.
+
+- **`utilizacao = 0` (about 22% of records):** this value is not part of SUSEP's documented category list (1 = leisure, 2 = daily commute, 3 = work-related). It corresponds to a "not informed" category in the source data, not a processing error, and it was deliberately kept in the dataset. It is not random noise either: policies with `utilizacao = 0` show a much lower observed claim frequency (about 0.06 claims per policy-year, against 0.11 to 0.40 for the documented categories) and a higher average severity, so they carry a distinct risk profile. Recommended handling: treat it as its own factor level. Dropping it would discard over a fifth of the data and bias the portfolio mix.
+- **Some policies have claims with zero total amount** (about 360 records with `n_sinistros` > 0 and `valor_sinistro = 0`, e.g. losses fully absorbed by the deductible). Restricting severity analyses to policies with strictly positive claim amounts, as the case instructions suggest, handles this naturally.
+- **`pre_casco` is zero for about 1.3% of policies.** Worth filtering or flagging in analyses that use the observed premium as a reference.
+- Minor footnotes: `tipo_franq = 9` (no deductible) coexists with `val_franq > 0` in about 1,400 records (a reporting inconsistency in the source data), and `cod_apo` is not a unique key (a handful of policies appear twice because one policy can cover more than one vehicle; each row is one insured vehicle).
+
+## Region codes
+
+Region codes follow SUSEP's regional rating table for auto insurance (*regiões de circulação*), which groups Brazilian states (identified by the two-letter prefix) and metropolitan areas. The correspondence below comes from the auxiliary region table distributed with SUSEP's auto insurance data (the field layout is defined in SUSEP's *Manual de Orientação para Envio de Dados*, Circular SUSEP 522/2015, Table 8-8, [available here](https://www2.susep.gov.br/download/circular522/Manual522v022022.pdf)).
+
+The codes are kept as published in the dataset (rather than replaced with text labels) to preserve traceability to the raw SUSEP files. **Knowing the geographic identity of each region is not required for the exercise**: what matters is that region is a legitimate rating variable with substantial risk variation.
+
+| Code | Region |
+|---|---|
+| `01` | RS - Met. Porto Alegre e Caxias do Sul |
+| `02` | RS - Demais regiões |
+| `03` | SC - Met. Florianópolis e Sul |
+| `04` | SC - Oeste |
+| `05` | SC - Blumenau e demais regiões |
+| `06` | PR - F.Iguaçu-Medianeira-Cascavel-Toledo |
+| `07` | PR - Met. Curitiba |
+| `08` | PR - Demais regiões |
+| `09` | SP - Vale do Paraíba e Ribeira |
+| `10` | SP - Litoral Norte e Baixada Santista |
+| `11` | SP - Met. de São Paulo |
+| `12` | SP - Grande Campinas |
+| `13` | SP - Ribeirão Preto e Demais Mun. de Campinas |
+| `14` | MG - Triângulo mineiro |
+| `15` | MG - Sul |
+| `16` | MG - Met. BH-Centro Oeste-Zona Mata-C. Vertentes |
+| `17` | MG - Vale do Aço-Norte-Vale Jequitinhonha |
+| `18` | RJ - Met. do Rio de Janeiro |
+| `19` | RJ - Interior |
+| `20` | ES - Espírito Santo |
+| `21` | BA - Bahia |
+| `22` | SE - Sergipe |
+| `23` | PE - Pernambuco |
+| `24` | PB - Paraíba |
+| `25` | RN - Rio Grande do Norte |
+| `26` | AL - Alagoas |
+| `27` | CE - Ceará |
+| `28` | PI - Piauí |
+| `29` | MA - Maranhão |
+| `30` | PA - Pará |
+| `31` | AM - Amazonas |
+| `32` | AP - Amapá |
+| `33` | RO - Rondônia |
+| `34` | RR - Roraima |
+| `35` | AC - Acre |
+| `36` | MT - Mato Grosso |
+| `37` | MS - Mato Grosso do Sul |
+| `38` | DF - Brasília |
+| `39` | GO - Goiás |
+| `40` | TO - Tocantins |
+| `41` | GO - Sudeste de Goiás |
+
+Records with region codes outside this table (blank, `00` and `99`, together about 0.5% of the raw extract) were removed at preprocessing, so the dataset contains only the 41 documented codes.
+
+## Other notes
+
+- Variable names were kept in Portuguese to match the original SUSEP documentation, making it easy to cross-reference the official metadata files.
+- Monetary values are in Brazilian reais (BRL), first half of 2019, not inflation-adjusted.

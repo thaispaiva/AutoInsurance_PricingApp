@@ -1,0 +1,131 @@
+---
+title: "Auto Insurance Pricing Project"
+subtitle: "Ratemaking case study with real Brazilian regulatory data"
+---
+
+## Instructions
+
+This project is designed to be completed **in teams** (pairs or small groups, at the instructor's discretion).
+
+The final product is an **interactive application**, built in R Shiny or a similar framework, covering all stages of the pricing exercise: from exploratory data analysis to a working premium calculator.
+
+### Deliverables
+
+Each team submits the **application folder** (containing `app.R` or `ui.R`/`server.R`, any auxiliary scripts, and a `README.txt` file).
+
+Teams are encouraged to **publish the application to [shinyapps.io](https://www.shinyapps.io/)** before the presentation. The free plan is sufficient (up to 5 apps and 25 active hours per month). On presentation day, the app can then be opened directly in a browser, with nothing to install.
+
+### Learning Shiny
+
+For teams that want to build the application themselves from scratch, the official Posit tutorial is recommended:
+
+> [Shiny for R — Get Started](https://shiny.posit.co/r/getstarted/shiny-basics/lesson1/) — seven short, free lessons, no account needed.
+
+### Use of AI tools
+
+The use of AI tools (such as ChatGPT, GitHub Copilot, Claude, etc.) is **allowed and encouraged**, including for building the Shiny application. However:
+
+- All modeling choices must be understood and justified by the team during the presentation.
+- The `README.txt` must include a brief description of which tools were used and at which stages of the work.
+
+## The Data
+
+The dataset `auto_tarifacao_2019B.csv` is provided with this case (see [`data_dictionary.qmd`](data_dictionary.qmd) for full details).
+
+The data come from the anonymized auto insurance databases published by **SUSEP**, the Brazilian insurance regulator ([source](https://www.gov.br/susep/pt-br/central-de-conteudos/dados-estatisticos/bases-anonimizadas/bases_auto)), covering the first half of 2019 and filtered to:
+
+- **Rating category:** private passenger vehicles (domestic).
+- **Coverage:** comprehensive.
+- **Product type:** profile-rated products (guarantees complete driver information).
+- **Records:** original policies only (no endorsement or cancellation records).
+
+Exposure for each policy was computed in **policy-years**, limited to the semester window (2019-01-01 to 2019-06-30).
+
+### Available variables
+
+| Variable | Description |
+|---|---|
+| `regiao` | Risk region code (SUSEP regional rating table) |
+| `ano_modelo` | Vehicle model year |
+| `tipo_franq` | Deductible type: 1 = reduced, 2 = standard, 3 = increased, 4 = fixed deductible, 9 = no deductible |
+| `val_franq` | Contracted deductible amount (BRL) |
+| `is_casco` | Insured value, own-damage coverage (BRL) |
+| `utilizacao` | Vehicle use: 1 = leisure, 2 = daily commute, 3 = work-related, 0 = not informed |
+| `clas_bonus` | Bonus-malus class (no-claims discount tier) |
+| `perc_bonus` | Bonus discount percentage applied |
+| `sexo` | Primary driver's sex: M or F |
+| `idade_condutor` | Primary driver's age (years) |
+| `exposicao` | Exposure in policy-years (offset variable for the models) |
+| `pre_casco` | Observed premium charged for own-damage coverage (BRL), for reference |
+| `n_sinistros` | Number of own-damage claims in the period (response variable) |
+| `valor_sinistro` | Total own-damage claim amount (BRL) (response variable) |
+
+## The Application
+
+The application must be organized in three tabs or sections, covering all stages of the work.
+
+### Part 1 — Exploratory Analysis
+
+This section presents visualizations and tables describing the data before any modeling. Suggestions (*not exhaustive*):
+
+- Distribution of the response variables (`n_sinistros`, `valor_sinistro`).
+- Observed claim frequency (= total claims / total exposure) by sex, age group, region, and other factors.
+- Observed average severity (among policies with at least one claim) by risk factor.
+- Relationship between the observed premium (`pre_casco`) and the rating variables.
+
+### Part 2 — Model
+
+This section presents the fitted model and its results. Choose **one** of the two options:
+
+**Option A — Two-part modeling (frequency and severity):**
+
+- Fit a model for the number of claims (`n_sinistros`), using `log(exposicao)` as the offset.
+- Fit a model for the average claim amount (`valor_sinistro / n_sinistros`), restricted to policies with at least one claim.
+- The choice of distributions is up to your team and should be justified.
+- The **estimated pure premium** is the product of the two predictions: frequency times severity.
+
+**Option B — Joint modeling (direct pure premium):**
+
+- Fit a **Tweedie GLM** directly to `valor_sinistro`, using `log(exposicao)` as the offset.
+- The **estimated pure premium** is the model's direct prediction.
+
+In both cases, this section must include:
+
+- The variables **sex**, **driver age**, **region**, and **vehicle model year** in the model (others may be added).
+- A table of estimated coefficients. For each variable included, comment on the **sign** and **magnitude** of its effect on the premium.
+
+### Part 3 — Premium Calculator
+
+This section is the main pricing interface. The user enters the characteristics of the insured/vehicle, and the app returns the premium estimated by the fitted model.
+
+**Minimum requirements:**
+
+1. **Inputs:** at least the following variables:
+   - Driver's sex.
+   - Driver's age.
+   - Risk region.
+   - Vehicle model year.
+   - Bonus class.
+
+2. **Main output:** the estimated pure premium for the selected profile.
+
+3. **Visualization:** at least one chart showing how the estimated premium varies as a function of one rating variable (holding the others fixed). Ideally, the user can choose which variable to display.
+
+**Optional extensions (encouraged, not required):**
+
+- Compare the estimated premium with the observed average premium for similar profiles in the data.
+- Allow side-by-side comparison of two risk profiles.
+- Add a loading factor on top of the pure premium to approximate a commercial premium.
+
+## Assessment
+
+Projects are evaluated according to the following criteria:
+
+| Criterion | Weight |
+|---|---|
+| Exploratory analysis | 20% |
+| Model fit and interpretation | 20% |
+| Application quality | 40% |
+| Presentation (clarity and command of the content) | 20% |
+
+- **Optional peer vote:** after the presentations, students vote for one application as **Best App**, considering *functionality*, *design*, and *creativity*. The winning team can receive a small bonus, at the instructor's discretion.

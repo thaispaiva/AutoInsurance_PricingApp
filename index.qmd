@@ -1,0 +1,30 @@
+---
+title: "Pricing Auto Insurance from Real Claims Data"
+subtitle: "Building a ratemaking application using Brazilian regulatory data"
+toc: false
+---
+
+Teaching materials for a hands-on, end-to-end **ratemaking project** using real, anonymized auto insurance data published by SUSEP, the Brazilian insurance regulator. Students explore policy-level claims data, fit actuarial pricing models (frequency-severity GLMs or Tweedie), and build an interactive premium calculator in R Shiny.
+
+Developed for the undergraduate course *Tarifação de Seguros* (Insurance Ratemaking) at the Universidade Federal de Minas Gerais (UFMG), Brazil, and submitted to the **CAS Global Teaching Materials Innovation Challenge (2026)**.
+
+## Documents
+
+| Document | Audience | Description |
+|---|---|---|
+| [Case description](case_description.qmd) | Students | The case handout: instructions, data, application structure, and assessment criteria |
+| [Data dictionary](data_dictionary.qmd) | Everyone | Data provenance, variable dictionary, and data-quality notes |
+| [Solution outline](solution_outline.qmd) | Instructors | Grading guide: what to look for in each part and common pitfalls |
+| [CAS submission](CAS_submission.qmd) | Reviewers | The full submission document for the CAS Challenge |
+
+## Code and data
+
+| File | Description |
+|---|---|
+| [`app.R`](https://github.com/thaispaiva/AutoInsurance_PricingApp/blob/main/app.R) | Example application (one complete solution, deployable on shinyapps.io's free tier) |
+| [`preprocessing_susep.R`](https://github.com/thaispaiva/AutoInsurance_PricingApp/blob/main/preprocessing_susep.R) | Documented script that builds the dataset from SUSEP's raw public files |
+| [`auto_tarifacao_2019B.csv`](https://github.com/thaispaiva/AutoInsurance_PricingApp/blob/main/auto_tarifacao_2019B.csv) | The dataset: ~200,000 auto policies with claims, first half of 2019 |
+
+## Live demo
+
+An example of the finished application is deployed at: **[DEMO URL]**

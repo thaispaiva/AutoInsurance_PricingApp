@@ -1,0 +1,71 @@
+---
+title: "Solution Outline"
+subtitle: "Instructor guide: what to look for when evaluating student applications"
+---
+
+## Part 1 — Exploratory Analysis
+
+A strong submission shows:
+
+- **Frequency computed correctly as claims per policy-year** (total claims divided by total exposure within each group), not claims per policy. This is the single most important technical point in the EDA: with a semester window, most policies have exposure well below 1, and ignoring this roughly doubles apparent frequencies.
+- **Severity restricted to policies with at least one claim**, typically displayed on a log scale given the heavy right skew.
+- Frequency and severity broken down by the main rating factors (sex, age group, region), with sensible grouping (age bands rather than raw age; regions with very few policies handled or filtered).
+- Some look at the **observed premium** (`pre_casco`) against the same factors, connecting the data to the pricing question.
+
+Typical expected patterns (useful as a sanity check while grading): higher frequency for younger drivers, moderate differences by sex, substantial variation across regions, and right-skewed severity with a long tail.
+
+## Part 2 — Model
+
+Both options are equally valid, and within Option A the choice of distributions is left to the students: grade the execution and the justification, not the choice itself.
+
+**Option A (two-part model):**
+
+- `log(exposicao)` used as offset in the frequency model. A model without the offset is a substantive error.
+- A sensible, justified distribution for each part: for counts, Poisson is the natural choice (negative binomial is a fine alternative if overdispersion is raised); for severity, a positive right-skewed distribution such as Gamma or log-normal. What matters is that the team can defend the choice.
+- Severity model fit on **average claim amount** (`valor_sinistro / n_sinistros`), restricted to the claims subset. Fitting a Gamma to the total claim amount including zeros is a common error (Gamma does not admit zeros; students sometimes "fix" this by adding a constant, which should be flagged).
+- Pure premium correctly formed as the product of the two predictions.
+
+**Option B (Tweedie):**
+
+- `log(exposicao)` as offset, power parameter between 1 and 2 (estimated or fixed with justification).
+- Pure premium taken directly from the prediction.
+
+**Both options:**
+
+- The four required variables (sex, age, region, model year) included.
+- A coefficient table with interpretation of **sign and magnitude** (ideally via `exp(coef)`, read as multiplicative effects on the premium). Interpretation should be consistent with the EDA findings; a mismatch that goes uncommented suggests the team did not connect the two parts.
+- Formal variable-selection procedures (stepwise AIC, likelihood-ratio testing) are deliberately **out of scope**. Do not reward or penalize their presence; the focus is interpretation.
+
+## Part 3 — Premium Calculator
+
+A strong calculator:
+
+- Includes all five required inputs (sex, age, region, model year, bonus class) and returns the pure premium for the selected profile.
+- Shows at least one **premium response curve** (premium as a function of one variable, others held fixed), correctly recomputed when inputs change.
+- **Handles profiles outside the training data gracefully.** This is the most revealing quality test: select a rare region or an extreme age and see whether the app fails with an error, silently returns nonsense, or shows an informative message. Graceful handling deserves credit.
+
+Application quality overall also covers: the app runs without errors from a clean session, the three sections are complete and navigable, and outputs are labeled well enough to be read by someone who did not build the app.
+
+## Common pitfalls to watch for
+
+1. **Factor-level mismatch between the frequency and severity models.** The severity model sees only the claims subset, which typically lacks some factor levels (small regions in particular). If levels are not aligned (e.g., with `droplevels()` and consistent level sets at prediction time), the calculator fails, sometimes silently, for certain profiles. Test the calculator with a few uncommon regions during grading.
+2. **Frequency per policy instead of per policy-year** (missing exposure in the EDA and/or missing offset in the model).
+3. **Gamma model fit on total claim amount including zeros**, or on `valor_sinistro` without dividing by `n_sinistros`.
+4. **The `utilizacao = 0` category ignored silently.** Teams that notice it and make an explicit choice (keep as "not informed" level, or exclude with justification) show the kind of data awareness this case is designed to teach.
+5. **Extrapolation presented without caveats**, e.g., a smooth premium curve extended over ages or regions where the model has little or no data.
+
+## Presentation / communication
+
+Look for: a clear statement of which modeling option was chosen and why, correct reading of at least a few coefficients in business terms ("drivers in region X pay about Y% more, holding everything else fixed"), and honest acknowledgment of limitations. 
+
+If AI tools were used, the required declaration should be present, and the team should be able to explain any modeling choice when questioned. Inability to justify a choice that appears in their own app is the clearest signal of uncritical AI use and should be reflected in this criterion.
+
+## Suggested rubric
+
+| Criterion | Weight |
+|---|---|
+| Exploratory analysis | 20% |
+| Model fit and interpretation | 20% |
+| Application quality | 40% |
+| Presentation (clarity and command of the content) | 20% |
+| **Total** | **100%** |

@@ -1,0 +1,115 @@
+---
+title: "CAS Global Teaching Materials Innovation Challenge"
+subtitle: "Pricing Auto Insurance from Real Claims Data"
+---
+
+## 1. Project Title and Summary
+
+**Title:** Pricing Auto Insurance from Real Claims Data: Building a Ratemaking Application using Brazilian Regulatory Data
+
+**Summary:**
+Students build an interactive ratemaking application using anonymized, publicly available policy-level data from Brazil's insurance regulator (SUSEP). Working in teams, they explore auto insurance claims data, fit actuarial pricing models (frequency-severity GLMs or a Tweedie model), and deliver a working premium calculator, translating statistical output into a pricing decision a real insurer could use.
+
+## 2. Estimated Time Needed
+
+- **In-class time:** about 15 minutes to introduce the case and walk through the instructions, plus one session for the final presentations and live demos (10 to 15 minutes per team). Optionally, instructors can reserve an additional class (about 1.5 hours) for teams to work on the project in person, with the instructor available for questions.
+- **Out-of-class time:** approximately 12 to 15 hours per team, spread over 2 to 3 weeks (data exploration, model fitting, app development).
+
+This case is designed as a capstone project for a ratemaking or non-life insurance pricing course: it assumes the underlying modeling content (GLMs, exposure, frequency-severity decomposition, pure premium) has already been covered during the semester, so no dedicated lecture time is required beyond the brief introduction.
+
+## 3. Learning Objectives
+
+By completing this exercise, students will be able to:
+
+- Apply generalized linear models (Poisson, Gamma, and/or Tweedie) to estimate claim frequency, severity, and pure premium from policy-level data.
+- Interpret GLM coefficients in terms of sign and magnitude, connecting statistical output to pricing decisions.
+- Handle exposure correctly as an offset in count and pure-premium models.
+- Translate a fitted pricing model into a usable, interactive tool (a Shiny application) that a non-technical stakeholder could use to price a policy.
+- Communicate modeling choices and their business implications to a non-specialist audience.
+
+## 4. Content and Background
+
+Ratemaking, determining a fair premium for a given risk profile, is one of the foundational tasks of a property & casualty actuary. This case gives students a hands-on, end-to-end ratemaking exercise using real (not simulated) claims data.
+
+The dataset comes from the Brazilian insurance regulator, **SUSEP** (Superintendência de Seguros Privados), which publishes anonymized, policy-level microdata for the auto insurance line twice a year. Each record describes one policy: driver characteristics (sex, age), vehicle information (model year, insured value), rating factors (risk region, bonus-malus class, deductible type, vehicle use), the exposure in policy-years, the premium actually charged, and the observed claim experience (number of own-damage claims and total claim amount). This is a large, active insurance market with real underwriting risk factors, making it a strong substitute for proprietary insurer data that students would otherwise never have access to. It also brings a global, emerging-market perspective to the classroom: students work with genuine regulatory open data from one of the largest insurance markets in Latin America.
+
+The case offers two modeling routes: the traditional two-part decomposition (a frequency model times a severity model) or a single model fit directly to the pure premium. It assumes prior familiarity with GLMs (link functions, offsets, error distributions) and is intended as the culminating project of a pricing course, not as a first contact with the material.
+
+## 5. Data Sets
+
+**File:** `auto_tarifacao_2019B.csv` (~200,000 policies, ~17 MB, CSV format), included in the project repository.
+
+**Source:** SUSEP's publicly available anonymized auto insurance database (`R_AUTO` and `S_AUTO` files, first half of 2019). Original source: https://www.gov.br/susep/pt-br/central-de-conteudos/dados-estatisticos/bases-anonimizadas/bases_auto
+
+**How this extract was built:** the full public files were filtered to comprehensive-coverage, private passenger auto policies with complete driver information, and original (non-endorsement) records. Exposure was computed in policy-years within the semester window. A stratified sample (by region) of ~200,000 policies was drawn from the filtered population for manageable file size. The full preprocessing script is included in the repository for transparency and reproducibility.
+
+A complete data dictionary is provided in the repository ([`data_dictionary.qmd`](data_dictionary.qmd)), including a documented data-quality note: about 22% of records carry an undocumented "not informed" category in the vehicle-use variable, which instructors can turn into a useful discussion point about working with real regulatory data.
+
+## 6. Guiding Questions and Prompts
+
+**Part 1 — Exploratory Analysis**
+
+- What do the distributions of claim count and claim severity look like? Are they consistent with what you would expect from an insurance portfolio (right-skewed severity, most policies with zero claims)?
+- How does observed claim frequency (claims per policy-year) vary by driver sex, age group, and region? Which of these differences look large enough to be worth pricing on?
+- Among policies with at least one claim, how does average severity vary across the same factors?
+- How does the premium currently charged relate to these same risk factors? Does the existing pricing already reflect the patterns you found?
+
+**Part 2 — Modeling**
+
+Students choose one of two approaches:
+
+- *Option A (two-part model):* one model for claim counts, using `log(exposure)` as offset, and one for average claim severity, fit on the subset of policies with at least one claim. The choice of distributions is left to the students. Pure premium = product of the two predictions.
+- *Option B (joint model):* a single Tweedie GLM fit directly to claim amount, with `log(exposure)` as offset. Pure premium = the model's direct prediction.
+
+Either way, students must include driver sex, driver age, region, and vehicle model year in the model, present a coefficient table, and discuss the sign and magnitude of each effect on price.
+
+**Part 3 — Premium Calculator**
+
+Students build an interactive interface where a user enters a risk profile and receives an estimated premium, with required inputs (sex, age, region, model year, bonus class), the estimated pure premium as main output, and at least one chart showing how the premium responds to one rating variable while the others are held fixed. Optional extensions include comparing the estimate to observed premiums for similar profiles, side-by-side profile comparison, and adding a loading factor to approximate a commercial premium.
+
+The full student-facing handout with all prompts is in the repository ([`case_description.qmd`](case_description.qmd)).
+
+## 7. Methods of Student Assessment
+
+Suggested rubric (percentage weights, adaptable):
+
+| Criterion | Weight |
+|---|---|
+| Exploratory analysis: relevant, correctly computed, clearly presented | 20% |
+| Model fit and interpretation: correct specification, sound interpretation of coefficients | 20% |
+| Application quality: all three required sections functional and usable | 40% |
+| Communication: clarity of the presentation, command of the modeling choices made | 20% |
+
+The exercise works well as a team project (pairs or small groups), delivered as a short in-class demo (10 to 15 minutes per team) or as a submitted application with a written summary. An optional peer vote for "best application," judged on functionality, design, and creativity, adds a light gamification element and has worked well in practice.
+
+A solution outline for instructors, describing what a strong answer looks like in each part and the most common pitfalls to watch for during grading, accompanies this submission ([`solution_outline.qmd`](solution_outline.qmd)).
+
+## 8. Suggested Presentation Materials
+
+No dedicated slide deck is required. The case is introduced with a brief (about 15 minutes) in-class walkthrough of the student handout ([`case_description.qmd`](case_description.qmd)), covering the dataset, the three-part structure of the application, the two modeling options, and the deliverables. Because the case is positioned as a capstone, all technical content it relies on has already been presented during the course.
+
+## 9. Teaching Notes and Solution Outline
+
+An instructor-facing solution outline ([`solution_outline.qmd`](solution_outline.qmd)) is included with this submission. It describes, part by part, what the instructor should look for in a strong submission (correct exposure-based frequency calculations, proper offset use, coherent interpretation of coefficients, a calculator that handles profiles outside the training data gracefully) and lists the most common technical pitfalls observed when this case was run with a real class, such as factor-level mismatches between the frequency and severity models and frequency computed per policy instead of per policy-year.
+
+A complete **example application** (`app.R`) is also included, implementing Option A end to end: exploratory dashboard, frequency and severity models with coefficient tables, and an interactive premium calculator with a user-selectable sensitivity chart. The code is written to run within the memory limits of shinyapps.io's free tier, so instructors and students can deploy it (and their own versions) at no cost. A live demo is available at: **[DEMO URL]**
+
+## 10. Format and Access Instructions
+
+All materials are hosted in a dedicated public GitHub repository:
+
+**https://github.com/thaispaiva/AutoInsurance_PricingApp**
+
+The repository is organized as an RStudio/Quarto project. All documents are written in Quarto (`.qmd`) and rendered to styled HTML pages published via GitHub Pages at: **[PAGES URL]**
+
+Contents:
+
+- `README.md` — overview and setup instructions.
+- [`case_description.qmd`](case_description.qmd) — the student-facing case handout.
+- [`data_dictionary.qmd`](data_dictionary.qmd) — data provenance, variable dictionary, and data-quality notes.
+- [`solution_outline.qmd`](solution_outline.qmd) — instructor-facing grading guide.
+- `auto_tarifacao_2019B.csv` — the dataset (~17 MB).
+- `preprocessing_susep.R` — the documented script that builds the dataset from SUSEP's raw public files (for transparency; students do not need to run it).
+- `app.R` — example application (one complete solution, deployable on shinyapps.io's free tier). Live demo: **[DEMO URL]**
+
+**Requirements:** R (version 4.2 or later) with the packages `shiny`, `bslib`, `dplyr`, `ggplot2`, `DT`, `readr`, and `scales`. No paid services or logins are required. Optionally, teams may publish their finished app to shinyapps.io's free tier to enable browser-based demos without local installation.
