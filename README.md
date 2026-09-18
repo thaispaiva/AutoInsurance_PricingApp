@@ -4,7 +4,7 @@ Teaching materials for a hands-on, end-to-end **ratemaking project** using real,
 
 Developed for the undergraduate course *Tarifação de Seguros* (Insurance Ratemaking) at the Universidade Federal de Minas Gerais (UFMG), Brazil, and submitted to the **CAS Global Teaching Materials Innovation Challenge (2026)**.
 
-**Rendered documents:** [PAGES URL] · **Live demo of the example app:** [DEMO URL]
+**Rendered documents:** <https://thaispaiva.github.io/AutoInsurance_PricingApp/>
 
 ## Who this is for
 
@@ -21,7 +21,8 @@ Instructors of ratemaking, non-life insurance pricing, or applied GLM courses. T
 | `index.qmd` | Landing page for the rendered site |
 | `auto_tarifacao_2019B.csv` | The dataset: ~200,000 auto policies with claims, first half of 2019 (~17 MB) |
 | `preprocessing_susep.R` | Documented script that builds the dataset from SUSEP's raw public files (for transparency; not needed to run the case) |
-| `app.R` | Example application: one complete solution (frequency x severity), deployable on shinyapps.io's free tier |
+| `app.R` | Example application: one complete solution (frequency x severity), with goodness-of-fit checks and a premium calculator |
+| `README.txt` | Notes that accompany the example application, in the format students are asked to deliver |
 
 ## Working with this project
 
@@ -46,20 +47,24 @@ shiny::runApp()
 
 - R version 4.2 or later
 - [Quarto](https://quarto.org/docs/get-started/) (bundled with recent versions of RStudio)
-- Packages: `shiny`, `bslib`, `dplyr`, `ggplot2`, `DT`, `readr`, `scales`
+- Packages: `shiny`, `bslib`, `dplyr`, `ggplot2`, `plotly`, `DT`, `readr`, `scales`
 
 ```r
-install.packages(c("shiny", "bslib", "dplyr", "ggplot2", "DT", "readr", "scales"))
+install.packages(c("shiny", "bslib", "dplyr", "ggplot2", "plotly", "DT", "readr", "scales"))
 ```
 
-No paid services or logins are required. Teams may optionally publish their finished app to [shinyapps.io](https://www.shinyapps.io/) (free tier); `app.R` includes deployment notes on staying within the free tier's 1 GB memory limit.
+No paid services are required. Teams may optionally publish their finished app to [Posit Connect Cloud](https://connect.posit.cloud/) (free plan), which deploys from a public GitHub repository; `app.R` includes notes on keeping memory use low on free hosting tiers.
 
 ## Data source and license
 
 The underlying data are published by SUSEP in anonymized form and are freely available at the [official open data portal](https://www.gov.br/susep/pt-br/central-de-conteudos/dados-estatisticos/bases-anonimizadas/bases_auto). See `data_dictionary.qmd` for the exact filters and sampling applied.
 
+## Use of AI tools
+
+Claude (Anthropic) was used as an assistant in preparing these materials: drafting and refactoring the code of the example Shiny application, reviewing the English text of the documents, and checking the consistency between the case description, the data dictionary, the solution outline and the dataset. The case design, the choice and preparation of the SUSEP data, the modeling decisions and the assessment criteria are the author's own. The case was first run with students in the *Tarifação de Seguros* course at UFMG, and all AI-assisted content was reviewed and tested by the author.
+
 ## Author
 
-Thaís Paiva Galletti — Departamento de Estatística, Universidade Federal de Minas Gerais (UFMG), Brazil.
+Thaís Paiva Galletti, Departamento de Estatística, Universidade Federal de Minas Gerais (UFMG), Brazil.
 
 Contact: [thaispaiva@est.ufmg.br](mailto:thaispaiva@est.ufmg.br)

@@ -1,5 +1,5 @@
 project:
-  type: default
+  type: website
   output-dir: docs
   render:
     - index.qmd
@@ -7,6 +7,27 @@ project:
     - data_dictionary.qmd
     - solution_outline.qmd
     - CAS_submission.qmd
+
+website:
+  title: "Auto Insurance Pricing Project"
+  repo-url: https://github.com/thaispaiva/AutoInsurance_PricingApp
+  navbar:
+    background: "#1f4e79"
+    left:
+      - href: index.qmd
+        text: Home
+      - href: case_description.qmd
+        text: Case description
+      - href: data_dictionary.qmd
+        text: Data dictionary
+      - href: solution_outline.qmd
+        text: Solution outline
+      - href: CAS_submission.qmd
+        text: CAS submission
+    right:
+      - icon: github
+        href: https://github.com/thaispaiva/AutoInsurance_PricingApp
+        aria-label: GitHub repository
 
 author: "Thaís Paiva Galletti - Universidade Federal de Minas Gerais (UFMG), Brazil<br>([thaispaiva@est.ufmg.br](mailto:thaispaiva@est.ufmg.br))"
 lang: en
@@ -18,6 +39,5 @@ format:
     toc: true
     toc-depth: 3
     toc-title: "Contents"
-    embed-resources: true
     link-external-newwindow: true
     code-copy: true

@@ -24,7 +24,7 @@ The data are published by SUSEP in anonymized form and are freely available to t
 
 Exposure was computed in **policy-years**, clipped to the semester window (2019-01-01 to 2019-06-30). Claims were restricted to own-damage events (`EVENTO = 1`) and aggregated per policy.
 
-From the filtered population, a **stratified random sample by region** of approximately 200,000 policies was drawn (seed 2019) to keep the file at a manageable size (~17.6 MB). The full preprocessing script is available in this repository (`preprocessing_susep.R`).
+From the filtered population, a **stratified random sample by region** of approximately 200,000 policies was drawn (seed 2019) to keep the file at a manageable size (~17 MB). The full preprocessing script is available in this repository (`preprocessing_susep.R`).
 
 ## Variables
 
@@ -50,8 +50,8 @@ From the filtered population, a **stratified random sample by region** of approx
 
 Real regulatory data is rarely perfectly clean. The issues below are artifacts of the source data, documented here so they become discussion points rather than silent traps. Identifying and handling this kind of gap is part of the exercise.
 
-- **`utilizacao = 0` (about 22% of records):** this value is not part of SUSEP's documented category list (1 = leisure, 2 = daily commute, 3 = work-related). It corresponds to a "not informed" category in the source data, not a processing error, and it was deliberately kept in the dataset. It is not random noise either: policies with `utilizacao = 0` show a much lower observed claim frequency (about 0.06 claims per policy-year, against 0.11 to 0.40 for the documented categories) and a higher average severity, so they carry a distinct risk profile. Recommended handling: treat it as its own factor level. Dropping it would discard over a fifth of the data and bias the portfolio mix.
-- **Some policies have claims with zero total amount** (about 360 records with `n_sinistros` > 0 and `valor_sinistro = 0`, e.g. losses fully absorbed by the deductible). Restricting severity analyses to policies with strictly positive claim amounts, as the case instructions suggest, handles this naturally.
+- **`utilizacao = 0` (about 20% of records):** this value is not part of SUSEP's documented category list (1 = leisure, 2 = daily commute, 3 = work-related). It corresponds to a "not informed" category in the source data, not a processing error, and it was deliberately kept in the dataset. It is not random noise either: policies with `utilizacao = 0` show a much lower observed claim frequency (about 0.06 claims per policy-year, against 0.12 to 0.41 for the documented categories) and a higher average severity, so they carry a distinct risk profile. Recommended handling: treat it as its own factor level. Dropping it would discard a fifth of the data and bias the portfolio mix.
+- **Some policies have claims with zero total amount** (about 350 records with `n_sinistros` > 0 and `valor_sinistro = 0`, e.g. losses fully absorbed by the deductible). Restricting severity analyses to policies with strictly positive claim amounts, as the case instructions suggest, handles this naturally.
 - **`pre_casco` is zero for about 1.3% of policies.** Worth filtering or flagging in analyses that use the observed premium as a reference.
 - Minor footnotes: `tipo_franq = 9` (no deductible) coexists with `val_franq > 0` in about 1,400 records (a reporting inconsistency in the source data), and `cod_apo` is not a unique key (a handful of policies appear twice because one policy can cover more than one vehicle; each row is one insured vehicle).
 

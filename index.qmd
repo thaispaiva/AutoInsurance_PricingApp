@@ -21,10 +21,18 @@ Developed for the undergraduate course *Tarifação de Seguros* (Insurance Ratem
 
 | File | Description |
 |---|---|
-| [`app.R`](https://github.com/thaispaiva/AutoInsurance_PricingApp/blob/main/app.R) | Example application (one complete solution, deployable on shinyapps.io's free tier) |
+| [`app.R`](https://github.com/thaispaiva/AutoInsurance_PricingApp/blob/main/app.R) | Example application: one complete solution (frequency x severity), with goodness-of-fit checks and a premium calculator |
 | [`preprocessing_susep.R`](https://github.com/thaispaiva/AutoInsurance_PricingApp/blob/main/preprocessing_susep.R) | Documented script that builds the dataset from SUSEP's raw public files |
 | [`auto_tarifacao_2019B.csv`](https://github.com/thaispaiva/AutoInsurance_PricingApp/blob/main/auto_tarifacao_2019B.csv) | The dataset: ~200,000 auto policies with claims, first half of 2019 |
 
-## Live demo
+## Running the example application
 
-An example of the finished application is deployed at: **[DEMO URL]**
+Download `app.R` and `auto_tarifacao_2019B.csv` to the same folder and run `shiny::runApp()` in R. The required packages are listed in the repository's [README](https://github.com/thaispaiva/AutoInsurance_PricingApp#requirements). The models are fitted at startup, which takes about 15 seconds.
+
+<!-- If the example app is deployed, add the link here:
+A live demo is available at: URL
+-->
+
+## Use of AI tools
+
+Claude (Anthropic) was used as an assistant in preparing these materials: drafting and refactoring the code of the example Shiny application, reviewing the English text of the documents, and checking the consistency between the case description, the data dictionary, the solution outline and the dataset. The case design, the choice and preparation of the SUSEP data, the modeling decisions and the assessment criteria are the author's own. The case was first run with students in the *Tarifação de Seguros* course at UFMG, and all AI-assisted content was reviewed and tested by the author.

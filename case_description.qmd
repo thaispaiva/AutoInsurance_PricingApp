@@ -13,7 +13,7 @@ The final product is an **interactive application**, built in R Shiny or a simil
 
 Each team submits the **application folder** (containing `app.R` or `ui.R`/`server.R`, any auxiliary scripts, and a `README.txt` file).
 
-Teams are encouraged to **publish the application to [shinyapps.io](https://www.shinyapps.io/)** before the presentation. The free plan is sufficient (up to 5 apps and 25 active hours per month). On presentation day, the app can then be opened directly in a browser, with nothing to install.
+Teams are encouraged to **publish the application to [Posit Connect Cloud](https://connect.posit.cloud/)** before the presentation. The free plan is sufficient. Connect Cloud publishes directly from a public GitHub repository: push the application folder to GitHub, add a `manifest.json` file generated in R with `rsconnect::writeManifest()`, and select the repository on Connect Cloud. On presentation day, the app can then be opened directly in a browser, with nothing to install.
 
 ### Learning Shiny
 

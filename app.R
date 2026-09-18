@@ -18,7 +18,7 @@
 #
 # Interpretation is left for the presentation: the app shows results only.
 #
-# Memory note (shinyapps.io free tier, 1 GB): a glm object stores several
+# Memory note (free hosting tiers have limited RAM): a glm object stores several
 # copies of the data. We fit with model = FALSE, y = FALSE, compute every
 # diagnostic once at startup, and then strip what prediction does not need
 # (see slim_glm). Startup takes about 15 s.

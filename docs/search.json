@@ -1,0 +1,254 @@
+[
+  {
+    "objectID": "CAS_submission.html",
+    "href": "CAS_submission.html",
+    "title": "CAS Global Teaching Materials Innovation Challenge",
+    "section": "",
+    "text": "Title: Pricing Auto Insurance from Real Claims Data: Building a Ratemaking Application using Brazilian Regulatory Data\nSummary: Students build an interactive ratemaking application using anonymized, publicly available policy-level data from Brazil’s insurance regulator (SUSEP). Working in teams, they explore auto insurance claims data, fit actuarial pricing models (frequency-severity GLMs or a Tweedie model), and deliver a working premium calculator, translating statistical output into a pricing decision a real insurer could use."
+  },
+  {
+    "objectID": "CAS_submission.html#project-title-and-summary",
+    "href": "CAS_submission.html#project-title-and-summary",
+    "title": "CAS Global Teaching Materials Innovation Challenge",
+    "section": "",
+    "text": "Title: Pricing Auto Insurance from Real Claims Data: Building a Ratemaking Application using Brazilian Regulatory Data\nSummary: Students build an interactive ratemaking application using anonymized, publicly available policy-level data from Brazil’s insurance regulator (SUSEP). Working in teams, they explore auto insurance claims data, fit actuarial pricing models (frequency-severity GLMs or a Tweedie model), and deliver a working premium calculator, translating statistical output into a pricing decision a real insurer could use."
+  },
+  {
+    "objectID": "CAS_submission.html#estimated-time-needed",
+    "href": "CAS_submission.html#estimated-time-needed",
+    "title": "CAS Global Teaching Materials Innovation Challenge",
+    "section": "2. Estimated Time Needed",
+    "text": "2. Estimated Time Needed\n\nIn-class time: about 15 minutes to introduce the case and walk through the instructions, plus one session for the final presentations and live demos (10 to 15 minutes per team). Optionally, instructors can reserve an additional class (about 1.5 hours) for teams to work on the project in person, with the instructor available for questions.\nOut-of-class time: approximately 12 to 15 hours per team, spread over 2 to 3 weeks (data exploration, model fitting, app development).\n\nThis case is designed as a capstone project for a ratemaking or non-life insurance pricing course: it assumes the underlying modeling content (GLMs, exposure, frequency-severity decomposition, pure premium) has already been covered during the semester, so no dedicated lecture time is required beyond the brief introduction."
+  },
+  {
+    "objectID": "CAS_submission.html#learning-objectives",
+    "href": "CAS_submission.html#learning-objectives",
+    "title": "CAS Global Teaching Materials Innovation Challenge",
+    "section": "3. Learning Objectives",
+    "text": "3. Learning Objectives\nBy completing this exercise, students will be able to:\n\nApply generalized linear models (Poisson, Gamma, and/or Tweedie) to estimate claim frequency, severity, and pure premium from policy-level data.\nInterpret GLM coefficients in terms of sign and magnitude, connecting statistical output to pricing decisions.\nHandle exposure correctly as an offset in count and pure-premium models.\nTranslate a fitted pricing model into a usable, interactive tool (a Shiny application) that a non-technical stakeholder could use to price a policy.\nCommunicate modeling choices and their business implications to a non-specialist audience."
+  },
+  {
+    "objectID": "CAS_submission.html#content-and-background",
+    "href": "CAS_submission.html#content-and-background",
+    "title": "CAS Global Teaching Materials Innovation Challenge",
+    "section": "4. Content and Background",
+    "text": "4. Content and Background\nRatemaking, determining a fair premium for a given risk profile, is one of the foundational tasks of a property & casualty actuary. This case gives students a hands-on, end-to-end ratemaking exercise using real (not simulated) claims data.\nThe dataset comes from the Brazilian insurance regulator, SUSEP (Superintendência de Seguros Privados), which publishes anonymized, policy-level microdata for the auto insurance line twice a year. Each record describes one policy: driver characteristics (sex, age), vehicle information (model year, insured value), rating factors (risk region, bonus-malus class, deductible type, vehicle use), the exposure in policy-years, the premium actually charged, and the observed claim experience (number of own-damage claims and total claim amount). This is a large, active insurance market with real underwriting risk factors, making it a strong substitute for proprietary insurer data that students would otherwise never have access to. It also brings a global, emerging-market perspective to the classroom: students work with genuine regulatory open data from one of the largest insurance markets in Latin America.\nThe case offers two modeling routes: the traditional two-part decomposition (a frequency model times a severity model) or a single model fit directly to the pure premium. It assumes prior familiarity with GLMs (link functions, offsets, error distributions) and is intended as the culminating project of a pricing course, not as a first contact with the material."
+  },
+  {
+    "objectID": "CAS_submission.html#data-sets",
+    "href": "CAS_submission.html#data-sets",
+    "title": "CAS Global Teaching Materials Innovation Challenge",
+    "section": "5. Data Sets",
+    "text": "5. Data Sets\nFile: auto_tarifacao_2019B.csv (~200,000 policies, ~17 MB, CSV format), included in the project repository.\nSource: SUSEP’s publicly available anonymized auto insurance database (R_AUTO and S_AUTO files, first half of 2019). Original source: https://www.gov.br/susep/pt-br/central-de-conteudos/dados-estatisticos/bases-anonimizadas/bases_auto\nHow this extract was built: the full public files were filtered to comprehensive-coverage, private passenger auto policies with complete driver information, and original (non-endorsement) records. Exposure was computed in policy-years within the semester window. A stratified sample (by region) of ~200,000 policies was drawn from the filtered population for manageable file size. The full preprocessing script is included in the repository for transparency and reproducibility.\nA complete data dictionary is provided in the repository (data_dictionary.qmd), including a documented data-quality note: about 20% of records carry an undocumented “not informed” category in the vehicle-use variable, which instructors can turn into a useful discussion point about working with real regulatory data."
+  },
+  {
+    "objectID": "CAS_submission.html#guiding-questions-and-prompts",
+    "href": "CAS_submission.html#guiding-questions-and-prompts",
+    "title": "CAS Global Teaching Materials Innovation Challenge",
+    "section": "6. Guiding Questions and Prompts",
+    "text": "6. Guiding Questions and Prompts\nPart 1 — Exploratory Analysis\n\nWhat do the distributions of claim count and claim severity look like? Are they consistent with what you would expect from an insurance portfolio (right-skewed severity, most policies with zero claims)?\nHow does observed claim frequency (claims per policy-year) vary by driver sex, age group, and region? Which of these differences look large enough to be worth pricing on?\nAmong policies with at least one claim, how does average severity vary across the same factors?\nHow does the premium currently charged relate to these same risk factors? Does the existing pricing already reflect the patterns you found?\n\nPart 2 — Modeling\nStudents choose one of two approaches:\n\nOption A (two-part model): one model for claim counts, using log(exposure) as offset, and one for average claim severity, fit on the subset of policies with at least one claim. The choice of distributions is left to the students. Pure premium = product of the two predictions.\nOption B (joint model): a single Tweedie GLM fit directly to claim amount, with log(exposure) as offset. Pure premium = the model’s direct prediction.\n\nEither way, students must include driver sex, driver age, region, and vehicle model year in the model, present a coefficient table, and discuss the sign and magnitude of each effect on price.\nPart 3 — Premium Calculator\nStudents build an interactive interface where a user enters a risk profile and receives an estimated premium, with required inputs (sex, age, region, model year, bonus class), the estimated pure premium as main output, and at least one chart showing how the premium responds to one rating variable while the others are held fixed. Optional extensions include comparing the estimate to observed premiums for similar profiles, side-by-side profile comparison, and adding a loading factor to approximate a commercial premium.\nThe full student-facing handout with all prompts is in the repository (case_description.qmd)."
+  },
+  {
+    "objectID": "CAS_submission.html#methods-of-student-assessment",
+    "href": "CAS_submission.html#methods-of-student-assessment",
+    "title": "CAS Global Teaching Materials Innovation Challenge",
+    "section": "7. Methods of Student Assessment",
+    "text": "7. Methods of Student Assessment\nSuggested rubric (percentage weights, adaptable):\n\n\n\n\n\n\n\nCriterion\nWeight\n\n\n\n\nExploratory analysis: relevant, correctly computed, clearly presented\n20%\n\n\nModel fit and interpretation: correct specification, sound interpretation of coefficients\n20%\n\n\nApplication quality: all three required sections functional and usable\n40%\n\n\nCommunication: clarity of the presentation, command of the modeling choices made\n20%\n\n\n\nThe exercise works well as a team project (pairs or small groups), delivered as a short in-class demo (10 to 15 minutes per team) or as a submitted application with a written summary. An optional peer vote for “best application,” judged on functionality, design, and creativity, adds a light gamification element and has worked well in practice.\nA solution outline for instructors, describing what a strong answer looks like in each part and the most common pitfalls to watch for during grading, accompanies this submission (solution_outline.qmd)."
+  },
+  {
+    "objectID": "CAS_submission.html#suggested-presentation-materials",
+    "href": "CAS_submission.html#suggested-presentation-materials",
+    "title": "CAS Global Teaching Materials Innovation Challenge",
+    "section": "8. Suggested Presentation Materials",
+    "text": "8. Suggested Presentation Materials\nNo dedicated slide deck is required. The case is introduced with a brief (about 15 minutes) in-class walkthrough of the student handout (case_description.qmd), covering the dataset, the three-part structure of the application, the two modeling options, and the deliverables. Because the case is positioned as a capstone, all technical content it relies on has already been presented during the course."
+  },
+  {
+    "objectID": "CAS_submission.html#teaching-notes-and-solution-outline",
+    "href": "CAS_submission.html#teaching-notes-and-solution-outline",
+    "title": "CAS Global Teaching Materials Innovation Challenge",
+    "section": "9. Teaching Notes and Solution Outline",
+    "text": "9. Teaching Notes and Solution Outline\nAn instructor-facing solution outline (solution_outline.qmd) is included with this submission. It describes, part by part, what the instructor should look for in a strong submission (correct exposure-based frequency calculations, proper offset use, coherent interpretation of coefficients, a calculator that handles profiles outside the training data gracefully) and lists the most common technical pitfalls observed when this case was run with a real class, such as factor-level mismatches between the frequency and severity models and frequency computed per policy instead of per policy-year.\nA complete example application (app.R) is also included, implementing Option A end to end: an exploratory dashboard, frequency and severity models with relativities, coefficient tables and goodness-of-fit checks, and an interactive premium calculator in which the user chooses the rating variable shown in the response chart. It is presented as the pricing platform of a fictional insurer and shows results only, leaving the interpretation to the presentation, as students are asked to do. The code keeps memory use low enough for free hosting tiers such as Posit Connect Cloud, so instructors and students can deploy it (and their own versions) at no cost."
+  },
+  {
+    "objectID": "CAS_submission.html#format-and-access-instructions",
+    "href": "CAS_submission.html#format-and-access-instructions",
+    "title": "CAS Global Teaching Materials Innovation Challenge",
+    "section": "10. Format and Access Instructions",
+    "text": "10. Format and Access Instructions\nAll materials are hosted in a dedicated public GitHub repository:\nhttps://github.com/thaispaiva/AutoInsurance_PricingApp\nThe repository is organized as an RStudio/Quarto project. All documents are written in Quarto (.qmd) and rendered to styled HTML pages published via GitHub Pages at: https://thaispaiva.github.io/AutoInsurance_PricingApp/\nContents:\n\nREADME.md — overview and setup instructions.\ncase_description.qmd — the student-facing case handout.\ndata_dictionary.qmd — data provenance, variable dictionary, and data-quality notes.\nsolution_outline.qmd — instructor-facing grading guide.\nauto_tarifacao_2019B.csv — the dataset (~17 MB).\npreprocessing_susep.R — the documented script that builds the dataset from SUSEP’s raw public files (for transparency; students do not need to run it).\napp.R — example application (one complete solution), with its accompanying README.txt.\n\nRequirements: R (version 4.2 or later) with the packages shiny, bslib, dplyr, ggplot2, plotly, DT, readr, and scales. No paid services are required. Optionally, teams may publish their finished app to Posit Connect Cloud (free plan) to enable browser-based demos without local installation."
+  },
+  {
+    "objectID": "CAS_submission.html#use-of-ai-tools",
+    "href": "CAS_submission.html#use-of-ai-tools",
+    "title": "CAS Global Teaching Materials Innovation Challenge",
+    "section": "Use of AI Tools",
+    "text": "Use of AI Tools\nClaude (Anthropic) was used as an assistant in preparing these materials: drafting and refactoring the code of the example Shiny application, reviewing the English text of the documents, and checking the consistency between the case description, the data dictionary, the solution outline and the dataset. The case design, the choice and preparation of the SUSEP data, the modeling decisions and the assessment criteria are the author’s own. The case was first run with students in the Tarifação de Seguros course at UFMG, and all AI-assisted content was reviewed and tested by the author."
+  },
+  {
+    "objectID": "data_dictionary.html",
+    "href": "data_dictionary.html",
+    "title": "Data Dictionary",
+    "section": "",
+    "text": "The dataset was built from the anonymized auto insurance databases published by SUSEP (Superintendência de Seguros Privados, the Brazilian insurance regulator): files R_AUTO_2019B (policies) and S_AUTO_2019B (claims), covering the first half of 2019.\nOfficial source: https://www.gov.br/susep/pt-br/central-de-conteudos/dados-estatisticos/bases-anonimizadas/bases_auto\nThe data are published by SUSEP in anonymized form and are freely available to the public. No additional anonymization was required."
+  },
+  {
+    "objectID": "data_dictionary.html#provenance",
+    "href": "data_dictionary.html#provenance",
+    "title": "Data Dictionary",
+    "section": "",
+    "text": "The dataset was built from the anonymized auto insurance databases published by SUSEP (Superintendência de Seguros Privados, the Brazilian insurance regulator): files R_AUTO_2019B (policies) and S_AUTO_2019B (claims), covering the first half of 2019.\nOfficial source: https://www.gov.br/susep/pt-br/central-de-conteudos/dados-estatisticos/bases-anonimizadas/bases_auto\nThe data are published by SUSEP in anonymized form and are freely available to the public. No additional anonymization was required."
+  },
+  {
+    "objectID": "data_dictionary.html#filters-applied",
+    "href": "data_dictionary.html#filters-applied",
+    "title": "Data Dictionary",
+    "section": "Filters applied",
+    "text": "Filters applied\n\nRating category (COD_TARIF = 10): private passenger vehicles, domestic.\nCoverage (COBERTURA = 1): comprehensive.\nProduct type (TIPO_PROD = 2): profile-rated products, which guarantees that driver-level variables are filled in.\nRecords (COD_END = 0): original policies only, excluding endorsement and cancellation records.\nPolicies with exposure of zero within the semester window, missing driver birth date, or driver age outside 18 to 100 years were excluded.\nRecords with undocumented “not informed” labels in fields of low pedagogical interest were removed at preprocessing: sex recorded as 0 (84 records); blank region codes and the undocumented region codes 00 and 99 (about 0.5% combined); and bonus classes * and X (about 2.8%). The X records all carried a constant 46% bonus discount and very low claim frequency, suggesting a special top bonus class, but were removed to keep the documented 0 to 9 scale.\n45 records with negative total claim amounts (net recoveries or reversals) were excluded, since negative responses break both Gamma and Tweedie fits.\nThe tempo_hab field (time since licensing) was dropped: about 97% of raw records carry the value 0, so the field is effectively unfilled.\n\nExposure was computed in policy-years, clipped to the semester window (2019-01-01 to 2019-06-30). Claims were restricted to own-damage events (EVENTO = 1) and aggregated per policy.\nFrom the filtered population, a stratified random sample by region of approximately 200,000 policies was drawn (seed 2019) to keep the file at a manageable size (~17 MB). The full preprocessing script is available in this repository (preprocessing_susep.R)."
+  },
+  {
+    "objectID": "data_dictionary.html#variables",
+    "href": "data_dictionary.html#variables",
+    "title": "Data Dictionary",
+    "section": "Variables",
+    "text": "Variables\n\n\n\n\n\n\n\n\nVariable\nType\nDescription\n\n\n\n\ncod_apo\ncharacter\nAnonymized policy identifier\n\n\nregiao\ncharacter\nRisk region code (SUSEP regional rating table)\n\n\nano_modelo\ninteger\nVehicle model year\n\n\ntipo_franq\ncharacter\nDeductible type: 1 = reduced, 2 = standard, 3 = increased, 4 = fixed deductible, 9 = no deductible\n\n\nval_franq\nnumeric\nContracted deductible amount (BRL)\n\n\nis_casco\nnumeric\nInsured value, own-damage coverage (BRL)\n\n\nutilizacao\ncharacter\nVehicle use: 1 = leisure, 2 = daily commute, 3 = work-related, 0 = not informed (see note below)\n\n\nclas_bonus\ncharacter\nBonus-malus class (no-claims discount tier)\n\n\nperc_bonus\nnumeric\nBonus discount percentage applied\n\n\nsexo\ncharacter\nPrimary driver’s sex: M or F\n\n\nidade_condutor\nnumeric\nPrimary driver’s age in years (reference date: 2019-01-01)\n\n\nexposicao\nnumeric\nExposure in policy-years (use as offset in the models)\n\n\npre_casco\nnumeric\nObserved premium charged for own-damage coverage (BRL), reference only\n\n\nn_sinistros\ninteger\nNumber of own-damage claims in the period (response variable)\n\n\nvalor_sinistro\nnumeric\nTotal own-damage claim amount (BRL) (response variable)"
+  },
+  {
+    "objectID": "data_dictionary.html#data-quality-notes",
+    "href": "data_dictionary.html#data-quality-notes",
+    "title": "Data Dictionary",
+    "section": "Data-quality notes",
+    "text": "Data-quality notes\nReal regulatory data is rarely perfectly clean. The issues below are artifacts of the source data, documented here so they become discussion points rather than silent traps. Identifying and handling this kind of gap is part of the exercise.\n\nutilizacao = 0 (about 20% of records): this value is not part of SUSEP’s documented category list (1 = leisure, 2 = daily commute, 3 = work-related). It corresponds to a “not informed” category in the source data, not a processing error, and it was deliberately kept in the dataset. It is not random noise either: policies with utilizacao = 0 show a much lower observed claim frequency (about 0.06 claims per policy-year, against 0.12 to 0.41 for the documented categories) and a higher average severity, so they carry a distinct risk profile. Recommended handling: treat it as its own factor level. Dropping it would discard a fifth of the data and bias the portfolio mix.\nSome policies have claims with zero total amount (about 350 records with n_sinistros &gt; 0 and valor_sinistro = 0, e.g. losses fully absorbed by the deductible). Restricting severity analyses to policies with strictly positive claim amounts, as the case instructions suggest, handles this naturally.\npre_casco is zero for about 1.3% of policies. Worth filtering or flagging in analyses that use the observed premium as a reference.\nMinor footnotes: tipo_franq = 9 (no deductible) coexists with val_franq &gt; 0 in about 1,400 records (a reporting inconsistency in the source data), and cod_apo is not a unique key (a handful of policies appear twice because one policy can cover more than one vehicle; each row is one insured vehicle)."
+  },
+  {
+    "objectID": "data_dictionary.html#region-codes",
+    "href": "data_dictionary.html#region-codes",
+    "title": "Data Dictionary",
+    "section": "Region codes",
+    "text": "Region codes\nRegion codes follow SUSEP’s regional rating table for auto insurance (regiões de circulação), which groups Brazilian states (identified by the two-letter prefix) and metropolitan areas. The correspondence below comes from the auxiliary region table distributed with SUSEP’s auto insurance data (the field layout is defined in SUSEP’s Manual de Orientação para Envio de Dados, Circular SUSEP 522/2015, Table 8-8, available here).\nThe codes are kept as published in the dataset (rather than replaced with text labels) to preserve traceability to the raw SUSEP files. Knowing the geographic identity of each region is not required for the exercise: what matters is that region is a legitimate rating variable with substantial risk variation.\n\n\n\nCode\nRegion\n\n\n\n\n01\nRS - Met. Porto Alegre e Caxias do Sul\n\n\n02\nRS - Demais regiões\n\n\n03\nSC - Met. Florianópolis e Sul\n\n\n04\nSC - Oeste\n\n\n05\nSC - Blumenau e demais regiões\n\n\n06\nPR - F.Iguaçu-Medianeira-Cascavel-Toledo\n\n\n07\nPR - Met. Curitiba\n\n\n08\nPR - Demais regiões\n\n\n09\nSP - Vale do Paraíba e Ribeira\n\n\n10\nSP - Litoral Norte e Baixada Santista\n\n\n11\nSP - Met. de São Paulo\n\n\n12\nSP - Grande Campinas\n\n\n13\nSP - Ribeirão Preto e Demais Mun. de Campinas\n\n\n14\nMG - Triângulo mineiro\n\n\n15\nMG - Sul\n\n\n16\nMG - Met. BH-Centro Oeste-Zona Mata-C. Vertentes\n\n\n17\nMG - Vale do Aço-Norte-Vale Jequitinhonha\n\n\n18\nRJ - Met. do Rio de Janeiro\n\n\n19\nRJ - Interior\n\n\n20\nES - Espírito Santo\n\n\n21\nBA - Bahia\n\n\n22\nSE - Sergipe\n\n\n23\nPE - Pernambuco\n\n\n24\nPB - Paraíba\n\n\n25\nRN - Rio Grande do Norte\n\n\n26\nAL - Alagoas\n\n\n27\nCE - Ceará\n\n\n28\nPI - Piauí\n\n\n29\nMA - Maranhão\n\n\n30\nPA - Pará\n\n\n31\nAM - Amazonas\n\n\n32\nAP - Amapá\n\n\n33\nRO - Rondônia\n\n\n34\nRR - Roraima\n\n\n35\nAC - Acre\n\n\n36\nMT - Mato Grosso\n\n\n37\nMS - Mato Grosso do Sul\n\n\n38\nDF - Brasília\n\n\n39\nGO - Goiás\n\n\n40\nTO - Tocantins\n\n\n41\nGO - Sudeste de Goiás\n\n\n\nRecords with region codes outside this table (blank, 00 and 99, together about 0.5% of the raw extract) were removed at preprocessing, so the dataset contains only the 41 documented codes."
+  },
+  {
+    "objectID": "data_dictionary.html#other-notes",
+    "href": "data_dictionary.html#other-notes",
+    "title": "Data Dictionary",
+    "section": "Other notes",
+    "text": "Other notes\n\nVariable names were kept in Portuguese to match the original SUSEP documentation, making it easy to cross-reference the official metadata files.\nMonetary values are in Brazilian reais (BRL), first half of 2019, not inflation-adjusted."
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Pricing Auto Insurance from Real Claims Data",
+    "section": "",
+    "text": "Teaching materials for a hands-on, end-to-end ratemaking project using real, anonymized auto insurance data published by SUSEP, the Brazilian insurance regulator. Students explore policy-level claims data, fit actuarial pricing models (frequency-severity GLMs or Tweedie), and build an interactive premium calculator in R Shiny.\nDeveloped for the undergraduate course Tarifação de Seguros (Insurance Ratemaking) at the Universidade Federal de Minas Gerais (UFMG), Brazil, and submitted to the CAS Global Teaching Materials Innovation Challenge (2026)."
+  },
+  {
+    "objectID": "index.html#documents",
+    "href": "index.html#documents",
+    "title": "Pricing Auto Insurance from Real Claims Data",
+    "section": "Documents",
+    "text": "Documents\n\n\n\nDocument\nAudience\nDescription\n\n\n\n\nCase description\nStudents\nThe case handout: instructions, data, application structure, and assessment criteria\n\n\nData dictionary\nEveryone\nData provenance, variable dictionary, and data-quality notes\n\n\nSolution outline\nInstructors\nGrading guide: what to look for in each part and common pitfalls\n\n\nCAS submission\nReviewers\nThe full submission document for the CAS Challenge"
+  },
+  {
+    "objectID": "index.html#code-and-data",
+    "href": "index.html#code-and-data",
+    "title": "Pricing Auto Insurance from Real Claims Data",
+    "section": "Code and data",
+    "text": "Code and data\n\n\n\nFile\nDescription\n\n\n\n\napp.R\nExample application: one complete solution (frequency x severity), with goodness-of-fit checks and a premium calculator\n\n\npreprocessing_susep.R\nDocumented script that builds the dataset from SUSEP’s raw public files\n\n\nauto_tarifacao_2019B.csv\nThe dataset: ~200,000 auto policies with claims, first half of 2019"
+  },
+  {
+    "objectID": "index.html#running-the-example-application",
+    "href": "index.html#running-the-example-application",
+    "title": "Pricing Auto Insurance from Real Claims Data",
+    "section": "Running the example application",
+    "text": "Running the example application\nDownload app.R and auto_tarifacao_2019B.csv to the same folder and run shiny::runApp() in R. The required packages are listed in the repository’s README. The models are fitted at startup, which takes about 15 seconds."
+  },
+  {
+    "objectID": "index.html#use-of-ai-tools",
+    "href": "index.html#use-of-ai-tools",
+    "title": "Pricing Auto Insurance from Real Claims Data",
+    "section": "Use of AI tools",
+    "text": "Use of AI tools\nClaude (Anthropic) was used as an assistant in preparing these materials: drafting and refactoring the code of the example Shiny application, reviewing the English text of the documents, and checking the consistency between the case description, the data dictionary, the solution outline and the dataset. The case design, the choice and preparation of the SUSEP data, the modeling decisions and the assessment criteria are the author’s own. The case was first run with students in the Tarifação de Seguros course at UFMG, and all AI-assisted content was reviewed and tested by the author."
+  },
+  {
+    "objectID": "case_description.html",
+    "href": "case_description.html",
+    "title": "Auto Insurance Pricing Project",
+    "section": "",
+    "text": "This project is designed to be completed in teams (pairs or small groups, at the instructor’s discretion).\nThe final product is an interactive application, built in R Shiny or a similar framework, covering all stages of the pricing exercise: from exploratory data analysis to a working premium calculator.\n\n\nEach team submits the application folder (containing app.R or ui.R/server.R, any auxiliary scripts, and a README.txt file).\nTeams are encouraged to publish the application to Posit Connect Cloud before the presentation. The free plan is sufficient. Connect Cloud publishes directly from a public GitHub repository: push the application folder to GitHub, add a manifest.json file generated in R with rsconnect::writeManifest(), and select the repository on Connect Cloud. On presentation day, the app can then be opened directly in a browser, with nothing to install.\n\n\n\nFor teams that want to build the application themselves from scratch, the official Posit tutorial is recommended:\n\nShiny for R — Get Started — seven short, free lessons, no account needed.\n\n\n\n\nThe use of AI tools (such as ChatGPT, GitHub Copilot, Claude, etc.) is allowed and encouraged, including for building the Shiny application. However:\n\nAll modeling choices must be understood and justified by the team during the presentation.\nThe README.txt must include a brief description of which tools were used and at which stages of the work."
+  },
+  {
+    "objectID": "case_description.html#instructions",
+    "href": "case_description.html#instructions",
+    "title": "Auto Insurance Pricing Project",
+    "section": "",
+    "text": "This project is designed to be completed in teams (pairs or small groups, at the instructor’s discretion).\nThe final product is an interactive application, built in R Shiny or a similar framework, covering all stages of the pricing exercise: from exploratory data analysis to a working premium calculator.\n\n\nEach team submits the application folder (containing app.R or ui.R/server.R, any auxiliary scripts, and a README.txt file).\nTeams are encouraged to publish the application to Posit Connect Cloud before the presentation. The free plan is sufficient. Connect Cloud publishes directly from a public GitHub repository: push the application folder to GitHub, add a manifest.json file generated in R with rsconnect::writeManifest(), and select the repository on Connect Cloud. On presentation day, the app can then be opened directly in a browser, with nothing to install.\n\n\n\nFor teams that want to build the application themselves from scratch, the official Posit tutorial is recommended:\n\nShiny for R — Get Started — seven short, free lessons, no account needed.\n\n\n\n\nThe use of AI tools (such as ChatGPT, GitHub Copilot, Claude, etc.) is allowed and encouraged, including for building the Shiny application. However:\n\nAll modeling choices must be understood and justified by the team during the presentation.\nThe README.txt must include a brief description of which tools were used and at which stages of the work."
+  },
+  {
+    "objectID": "case_description.html#the-data",
+    "href": "case_description.html#the-data",
+    "title": "Auto Insurance Pricing Project",
+    "section": "The Data",
+    "text": "The Data\nThe dataset auto_tarifacao_2019B.csv is provided with this case (see data_dictionary.qmd for full details).\nThe data come from the anonymized auto insurance databases published by SUSEP, the Brazilian insurance regulator (source), covering the first half of 2019 and filtered to:\n\nRating category: private passenger vehicles (domestic).\nCoverage: comprehensive.\nProduct type: profile-rated products (guarantees complete driver information).\nRecords: original policies only (no endorsement or cancellation records).\n\nExposure for each policy was computed in policy-years, limited to the semester window (2019-01-01 to 2019-06-30).\n\nAvailable variables\n\n\n\n\n\n\n\nVariable\nDescription\n\n\n\n\nregiao\nRisk region code (SUSEP regional rating table)\n\n\nano_modelo\nVehicle model year\n\n\ntipo_franq\nDeductible type: 1 = reduced, 2 = standard, 3 = increased, 4 = fixed deductible, 9 = no deductible\n\n\nval_franq\nContracted deductible amount (BRL)\n\n\nis_casco\nInsured value, own-damage coverage (BRL)\n\n\nutilizacao\nVehicle use: 1 = leisure, 2 = daily commute, 3 = work-related, 0 = not informed\n\n\nclas_bonus\nBonus-malus class (no-claims discount tier)\n\n\nperc_bonus\nBonus discount percentage applied\n\n\nsexo\nPrimary driver’s sex: M or F\n\n\nidade_condutor\nPrimary driver’s age (years)\n\n\nexposicao\nExposure in policy-years (offset variable for the models)\n\n\npre_casco\nObserved premium charged for own-damage coverage (BRL), for reference\n\n\nn_sinistros\nNumber of own-damage claims in the period (response variable)\n\n\nvalor_sinistro\nTotal own-damage claim amount (BRL) (response variable)"
+  },
+  {
+    "objectID": "case_description.html#the-application",
+    "href": "case_description.html#the-application",
+    "title": "Auto Insurance Pricing Project",
+    "section": "The Application",
+    "text": "The Application\nThe application must be organized in three tabs or sections, covering all stages of the work.\n\nPart 1 — Exploratory Analysis\nThis section presents visualizations and tables describing the data before any modeling. Suggestions (not exhaustive):\n\nDistribution of the response variables (n_sinistros, valor_sinistro).\nObserved claim frequency (= total claims / total exposure) by sex, age group, region, and other factors.\nObserved average severity (among policies with at least one claim) by risk factor.\nRelationship between the observed premium (pre_casco) and the rating variables.\n\n\n\nPart 2 — Model\nThis section presents the fitted model and its results. Choose one of the two options:\nOption A — Two-part modeling (frequency and severity):\n\nFit a model for the number of claims (n_sinistros), using log(exposicao) as the offset.\nFit a model for the average claim amount (valor_sinistro / n_sinistros), restricted to policies with at least one claim.\nThe choice of distributions is up to your team and should be justified.\nThe estimated pure premium is the product of the two predictions: frequency times severity.\n\nOption B — Joint modeling (direct pure premium):\n\nFit a Tweedie GLM directly to valor_sinistro, using log(exposicao) as the offset.\nThe estimated pure premium is the model’s direct prediction.\n\nIn both cases, this section must include:\n\nThe variables sex, driver age, region, and vehicle model year in the model (others may be added).\nA table of estimated coefficients. For each variable included, comment on the sign and magnitude of its effect on the premium.\n\n\n\nPart 3 — Premium Calculator\nThis section is the main pricing interface. The user enters the characteristics of the insured/vehicle, and the app returns the premium estimated by the fitted model.\nMinimum requirements:\n\nInputs: at least the following variables:\n\nDriver’s sex.\nDriver’s age.\nRisk region.\nVehicle model year.\nBonus class.\n\nMain output: the estimated pure premium for the selected profile.\nVisualization: at least one chart showing how the estimated premium varies as a function of one rating variable (holding the others fixed). Ideally, the user can choose which variable to display.\n\nOptional extensions (encouraged, not required):\n\nCompare the estimated premium with the observed average premium for similar profiles in the data.\nAllow side-by-side comparison of two risk profiles.\nAdd a loading factor on top of the pure premium to approximate a commercial premium."
+  },
+  {
+    "objectID": "case_description.html#assessment",
+    "href": "case_description.html#assessment",
+    "title": "Auto Insurance Pricing Project",
+    "section": "Assessment",
+    "text": "Assessment\nProjects are evaluated according to the following criteria:\n\n\n\nCriterion\nWeight\n\n\n\n\nExploratory analysis\n20%\n\n\nModel fit and interpretation\n20%\n\n\nApplication quality\n40%\n\n\nPresentation (clarity and command of the content)\n20%\n\n\n\n\nOptional peer vote: after the presentations, students vote for one application as Best App, considering functionality, design, and creativity. The winning team can receive a small bonus, at the instructor’s discretion."
+  },
+  {
+    "objectID": "solution_outline.html",
+    "href": "solution_outline.html",
+    "title": "Solution Outline",
+    "section": "",
+    "text": "A strong submission shows:\n\nFrequency computed correctly as claims per policy-year (total claims divided by total exposure within each group), not claims per policy. This is the single most important technical point in the EDA: with a semester window, most policies have exposure well below 1, and ignoring this roughly doubles apparent frequencies.\nSeverity restricted to policies with at least one claim, typically displayed on a log scale given the heavy right skew.\nFrequency and severity broken down by the main rating factors (sex, age group, region), with sensible grouping (age bands rather than raw age; regions with very few policies handled or filtered).\nSome look at the observed premium (pre_casco) against the same factors, connecting the data to the pricing question.\n\nTypical expected patterns (useful as a sanity check while grading): higher frequency for younger drivers, moderate differences by sex, substantial variation across regions, and right-skewed severity with a long tail."
+  },
+  {
+    "objectID": "solution_outline.html#part-1-exploratory-analysis",
+    "href": "solution_outline.html#part-1-exploratory-analysis",
+    "title": "Solution Outline",
+    "section": "",
+    "text": "A strong submission shows:\n\nFrequency computed correctly as claims per policy-year (total claims divided by total exposure within each group), not claims per policy. This is the single most important technical point in the EDA: with a semester window, most policies have exposure well below 1, and ignoring this roughly doubles apparent frequencies.\nSeverity restricted to policies with at least one claim, typically displayed on a log scale given the heavy right skew.\nFrequency and severity broken down by the main rating factors (sex, age group, region), with sensible grouping (age bands rather than raw age; regions with very few policies handled or filtered).\nSome look at the observed premium (pre_casco) against the same factors, connecting the data to the pricing question.\n\nTypical expected patterns (useful as a sanity check while grading): higher frequency for younger drivers, moderate differences by sex, substantial variation across regions, and right-skewed severity with a long tail."
+  },
+  {
+    "objectID": "solution_outline.html#part-2-model",
+    "href": "solution_outline.html#part-2-model",
+    "title": "Solution Outline",
+    "section": "Part 2 — Model",
+    "text": "Part 2 — Model\nBoth options are equally valid, and within Option A the choice of distributions is left to the students: grade the execution and the justification, not the choice itself.\nOption A (two-part model):\n\nlog(exposicao) used as offset in the frequency model. A model without the offset is a substantive error.\nA sensible, justified distribution for each part: for counts, Poisson is the natural choice (negative binomial is a fine alternative if overdispersion is raised); for severity, a positive right-skewed distribution such as Gamma or log-normal. What matters is that the team can defend the choice.\nSeverity model fit on average claim amount (valor_sinistro / n_sinistros), restricted to the claims subset. Fitting a Gamma to the total claim amount including zeros is a common error (Gamma does not admit zeros; students sometimes “fix” this by adding a constant, which should be flagged).\nPure premium correctly formed as the product of the two predictions.\n\nOption B (Tweedie):\n\nlog(exposicao) as offset, power parameter between 1 and 2 (estimated or fixed with justification).\nPure premium taken directly from the prediction.\n\nBoth options:\n\nThe four required variables (sex, age, region, model year) included.\nA coefficient table with interpretation of sign and magnitude (ideally via exp(coef), read as multiplicative effects on the premium). Interpretation should be consistent with the EDA findings; a mismatch that goes uncommented suggests the team did not connect the two parts.\nFormal variable-selection procedures (stepwise AIC, likelihood-ratio testing) are deliberately out of scope. Do not reward or penalize their presence; the focus is interpretation."
+  },
+  {
+    "objectID": "solution_outline.html#part-3-premium-calculator",
+    "href": "solution_outline.html#part-3-premium-calculator",
+    "title": "Solution Outline",
+    "section": "Part 3 — Premium Calculator",
+    "text": "Part 3 — Premium Calculator\nA strong calculator:\n\nIncludes all five required inputs (sex, age, region, model year, bonus class) and returns the pure premium for the selected profile.\nShows at least one premium response curve (premium as a function of one variable, others held fixed), correctly recomputed when inputs change.\nHandles profiles outside the training data gracefully. This is the most revealing quality test: select a rare region or an extreme age and see whether the app fails with an error, silently returns nonsense, or shows an informative message. Graceful handling deserves credit.\n\nApplication quality overall also covers: the app runs without errors from a clean session, the three sections are complete and navigable, and outputs are labeled well enough to be read by someone who did not build the app."
+  },
+  {
+    "objectID": "solution_outline.html#common-pitfalls-to-watch-for",
+    "href": "solution_outline.html#common-pitfalls-to-watch-for",
+    "title": "Solution Outline",
+    "section": "Common pitfalls to watch for",
+    "text": "Common pitfalls to watch for\n\nFactor-level mismatch between the frequency and severity models. The severity model sees only the claims subset, which typically lacks some factor levels (small regions in particular). If levels are not aligned (e.g., with droplevels() and consistent level sets at prediction time), the calculator fails, sometimes silently, for certain profiles. Test the calculator with a few uncommon regions during grading.\nFrequency per policy instead of per policy-year (missing exposure in the EDA and/or missing offset in the model).\nGamma model fit on total claim amount including zeros, or on valor_sinistro without dividing by n_sinistros.\nThe utilizacao = 0 category ignored silently. Teams that notice it and make an explicit choice (keep as “not informed” level, or exclude with justification) show the kind of data awareness this case is designed to teach.\nExtrapolation presented without caveats, e.g., a smooth premium curve extended over ages or regions where the model has little or no data."
+  },
+  {
+    "objectID": "solution_outline.html#presentation-communication",
+    "href": "solution_outline.html#presentation-communication",
+    "title": "Solution Outline",
+    "section": "Presentation / communication",
+    "text": "Presentation / communication\nLook for: a clear statement of which modeling option was chosen and why, correct reading of at least a few coefficients in business terms (“drivers in region X pay about Y% more, holding everything else fixed”), and honest acknowledgment of limitations.\nIf AI tools were used, the required declaration should be present, and the team should be able to explain any modeling choice when questioned. Inability to justify a choice that appears in their own app is the clearest signal of uncritical AI use and should be reflected in this criterion."
+  },
+  {
+    "objectID": "solution_outline.html#suggested-rubric",
+    "href": "solution_outline.html#suggested-rubric",
+    "title": "Solution Outline",
+    "section": "Suggested rubric",
+    "text": "Suggested rubric\n\n\n\nCriterion\nWeight\n\n\n\n\nExploratory analysis\n20%\n\n\nModel fit and interpretation\n20%\n\n\nApplication quality\n40%\n\n\nPresentation (clarity and command of the content)\n20%\n\n\nTotal\n100%"
+  }
+]

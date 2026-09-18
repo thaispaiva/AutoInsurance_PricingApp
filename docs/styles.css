@@ -1,0 +1,56 @@
+/* Auto Insurance Pricing App — shared document style */
+
+:root {
+  --brand: #2c6fad;
+  --brand-dark: #1f4e79;
+}
+
+h1.title {
+  color: var(--brand-dark);
+  font-weight: 700;
+}
+
+.subtitle {
+  color: #5a6b7b;
+  font-size: 1.15em;
+}
+
+h1, h2 {
+  color: var(--brand-dark);
+  border-bottom: 2px solid #e3ecf4;
+  padding-bottom: .25rem;
+  margin-top: 2rem;
+}
+
+h3, h4 {
+  color: var(--brand);
+}
+
+a {
+  color: var(--brand);
+}
+
+table {
+  font-size: .95em;
+}
+
+thead th {
+  background: #f0f4f8;
+  color: var(--brand-dark);
+}
+
+blockquote {
+  border-left: 4px solid var(--brand);
+  background: #f7fafc;
+  padding: .5rem 1rem;
+  color: #3b4a58;
+}
+
+.callout {
+  border-left-color: var(--brand) !important;
+}
+
+code {
+  color: var(--brand-dark);
+  background: #f0f4f8;
+}

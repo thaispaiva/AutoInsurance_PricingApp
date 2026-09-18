@@ -43,7 +43,7 @@ The case offers two modeling routes: the traditional two-part decomposition (a f
 
 **How this extract was built:** the full public files were filtered to comprehensive-coverage, private passenger auto policies with complete driver information, and original (non-endorsement) records. Exposure was computed in policy-years within the semester window. A stratified sample (by region) of ~200,000 policies was drawn from the filtered population for manageable file size. The full preprocessing script is included in the repository for transparency and reproducibility.
 
-A complete data dictionary is provided in the repository ([`data_dictionary.qmd`](data_dictionary.qmd)), including a documented data-quality note: about 22% of records carry an undocumented "not informed" category in the vehicle-use variable, which instructors can turn into a useful discussion point about working with real regulatory data.
+A complete data dictionary is provided in the repository ([`data_dictionary.qmd`](data_dictionary.qmd)), including a documented data-quality note: about 20% of records carry an undocumented "not informed" category in the vehicle-use variable, which instructors can turn into a useful discussion point about working with real regulatory data.
 
 ## 6. Guiding Questions and Prompts
 
@@ -92,7 +92,7 @@ No dedicated slide deck is required. The case is introduced with a brief (about 
 
 An instructor-facing solution outline ([`solution_outline.qmd`](solution_outline.qmd)) is included with this submission. It describes, part by part, what the instructor should look for in a strong submission (correct exposure-based frequency calculations, proper offset use, coherent interpretation of coefficients, a calculator that handles profiles outside the training data gracefully) and lists the most common technical pitfalls observed when this case was run with a real class, such as factor-level mismatches between the frequency and severity models and frequency computed per policy instead of per policy-year.
 
-A complete **example application** (`app.R`) is also included, implementing Option A end to end: exploratory dashboard, frequency and severity models with coefficient tables, and an interactive premium calculator with a user-selectable sensitivity chart. The code is written to run within the memory limits of shinyapps.io's free tier, so instructors and students can deploy it (and their own versions) at no cost. A live demo is available at: **[DEMO URL]**
+A complete **example application** (`app.R`) is also included, implementing Option A end to end: an exploratory dashboard, frequency and severity models with relativities, coefficient tables and goodness-of-fit checks, and an interactive premium calculator in which the user chooses the rating variable shown in the response chart. It is presented as the pricing platform of a fictional insurer and shows results only, leaving the interpretation to the presentation, as students are asked to do. The code keeps memory use low enough for free hosting tiers such as Posit Connect Cloud, so instructors and students can deploy it (and their own versions) at no cost.
 
 ## 10. Format and Access Instructions
 
@@ -100,7 +100,7 @@ All materials are hosted in a dedicated public GitHub repository:
 
 **https://github.com/thaispaiva/AutoInsurance_PricingApp**
 
-The repository is organized as an RStudio/Quarto project. All documents are written in Quarto (`.qmd`) and rendered to styled HTML pages published via GitHub Pages at: **[PAGES URL]**
+The repository is organized as an RStudio/Quarto project. All documents are written in Quarto (`.qmd`) and rendered to styled HTML pages published via GitHub Pages at: **<https://thaispaiva.github.io/AutoInsurance_PricingApp/>**
 
 Contents:
 
@@ -110,6 +110,10 @@ Contents:
 - [`solution_outline.qmd`](solution_outline.qmd) — instructor-facing grading guide.
 - `auto_tarifacao_2019B.csv` — the dataset (~17 MB).
 - `preprocessing_susep.R` — the documented script that builds the dataset from SUSEP's raw public files (for transparency; students do not need to run it).
-- `app.R` — example application (one complete solution, deployable on shinyapps.io's free tier). Live demo: **[DEMO URL]**
+- `app.R` — example application (one complete solution), with its accompanying `README.txt`.
 
-**Requirements:** R (version 4.2 or later) with the packages `shiny`, `bslib`, `dplyr`, `ggplot2`, `DT`, `readr`, and `scales`. No paid services or logins are required. Optionally, teams may publish their finished app to shinyapps.io's free tier to enable browser-based demos without local installation.
+**Requirements:** R (version 4.2 or later) with the packages `shiny`, `bslib`, `dplyr`, `ggplot2`, `plotly`, `DT`, `readr`, and `scales`. No paid services are required. Optionally, teams may publish their finished app to Posit Connect Cloud (free plan) to enable browser-based demos without local installation.
+
+## Use of AI Tools
+
+Claude (Anthropic) was used as an assistant in preparing these materials: drafting and refactoring the code of the example Shiny application, reviewing the English text of the documents, and checking the consistency between the case description, the data dictionary, the solution outline and the dataset. The case design, the choice and preparation of the SUSEP data, the modeling decisions and the assessment criteria are the author's own. The case was first run with students in the *Tarifação de Seguros* course at UFMG, and all AI-assisted content was reviewed and tested by the author.
